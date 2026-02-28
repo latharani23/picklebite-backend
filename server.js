@@ -86,8 +86,9 @@ const userRoutes = require("./routes/userRoutes");
 const app = express();
 
 /* ================= ALLOWED ORIGINS ================= */
-
 const allowedOrigins = [
+  "https://picklebite.in",
+  "https://www.picklebite.in",
   "https://picklebite.vercel.app",
   "http://localhost:3001",
 ];
@@ -110,14 +111,12 @@ io.on("connection", (socket) => {
 });
 
 /* ================= MIDDLEWARE ================= */
-
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
   }),
 );
-
 app.use(express.json());
 
 /* ================= HEALTH CHECK ================= */
