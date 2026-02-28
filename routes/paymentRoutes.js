@@ -69,7 +69,8 @@ router.post("/create-order", async (req, res) => {
     if (!amount || amount <= 0) {
       return res.status(400).json({ error: "Invalid amount" });
     }
-
+    console.log("Amount received:", amount);
+    console.log("Key ID:", process.env.RAZORPAY_KEY_ID);
     const order = await razorpay.orders.create({
       amount: Number(amount) * 100,
       currency: "INR",
