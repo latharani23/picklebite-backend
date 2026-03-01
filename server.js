@@ -93,6 +93,7 @@ const allowedOrigins = [
   "https://www.picklebite.in",
   "https://picklebite.vercel.app",
   "http://localhost:3001",
+  "http://localhost:3000",
 ];
 
 /* ================= SOCKET SETUP ================= */
