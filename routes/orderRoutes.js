@@ -69,7 +69,7 @@ const express = require("express");
 const Order = require("../models/Order");
 const protect = require("../middleware/authMiddleware");
 const nodemailer = require("nodemailer");
-
+const User = require("../models/User");
 const router = express.Router();
 
 /* ================= PLACE ORDER ================= */
@@ -127,7 +127,7 @@ router.post("/place", protect, async (req, res) => {
         <h2>New Order Received</h2>
         <p><strong>Order ID:</strong> ${order._id}</p>
         <p><strong>Name:</strong> ${customer.name}</p>
-        <p><strong>Email:</strong> ${customer.email}</p>
+        <p><strong>Email:</strong> ${req.user.email}</p>
         <p><strong>Phone:</strong> ${customer.phone}</p>
         <p><strong>Pincode:</strong> ${customer.pincode}</p>
         <p><strong>Address:</strong> ${customer.address}</p>
@@ -148,7 +148,7 @@ router.post("/place", protect, async (req, res) => {
 
     const customerMail = {
       from: process.env.EMAIL_USER,
-      to: customer.email,
+      to: req.user.email,
       subject: "✅ Your PickleBite Order Confirmation",
       html: `
         <h2>Thank You for Your Order ❤️</h2>
@@ -221,8 +221,9 @@ router.put("/update-status/:id", protect, async (req, res) => {
     await order.save();
 
     /* ===== If Delivered → Send Email ===== */
-
     if (status === "DELIVERED") {
+      const user = await User.findById(order.userId);
+
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -233,37 +234,19 @@ router.put("/update-status/:id", protect, async (req, res) => {
 
       const deliveryMail = {
         from: process.env.EMAIL_USER,
-        to: order.customer.email,
+        to: user.email, // ✅ fetched from DB
         subject: "🎉 Your PickleBite Order Delivered Successfully",
         html: `
-          <h2>Order Delivered Successfully 🎉</h2>
-          <p>Hi ${order.customer.name},</p>
-          <p>Your order has been delivered successfully.</p>
-
-          <p><strong>Order ID:</strong> ${order._id}</p>
-
-          <h3>Delivered Items:</h3>
-          ${order.items
-            .map(
-              (item) =>
-                `<p>${item.name} (${item.weight}) x ${item.quantity}</p>`,
-            )
-            .join("")}
-
-          <hr/>
-          <h3>Total Paid: ₹${order.totalAmount}</h3>
-
-          <p>We hope you enjoy your pickles! 💛</p>
-          <p>Please share your feedback ❤️</p>
-
-          <br/>
-          <p>Thank you for choosing Pickle Bite!</p>
-        `,
+      <h2>Order Delivered Successfully 🎉</h2>
+      <p>Hi ${user.username},</p>
+      <p>Your order has been delivered successfully.</p>
+      <p><strong>Order ID:</strong> ${order._id}</p>
+      <p><strong>Total Paid:</strong> ₹${order.totalAmount}</p>
+    `,
       };
 
       await transporter.sendMail(deliveryMail);
     }
-
     res.json({
       success: true,
       message: "Order status updated",
