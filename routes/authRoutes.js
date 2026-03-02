@@ -159,7 +159,9 @@ router.post("/admin-login", async (req, res) => {
       email !== process.env.ADMIN_EMAIL ||
       password !== process.env.ADMIN_PASSWORD
     ) {
-      return res.status(400).json({ message: "Invalid admin credentials" });
+      return res.status(400).json({
+        message: "Invalid admin credentials",
+      });
     }
 
     const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
@@ -168,13 +170,10 @@ router.post("/admin-login", async (req, res) => {
 
     res.json({
       token,
-      user: {
-        email: process.env.ADMIN_EMAIL,
-        role: "admin",
-      },
+      role: "admin",
     });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 
