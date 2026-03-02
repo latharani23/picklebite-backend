@@ -20,7 +20,7 @@ const sendOrderEmail = async (order) => {
         <p><strong>Email:</strong> ${order.customer.email}</p>
         <p><strong>Phone:</strong> ${order.customer.phone}</p>
         <p><strong>Address:</strong> ${order.customer.address}</p>
-        <p><strong>Total:</strong> ₹${order.total}</p>
+        <p><strong>Total:</strong> Rs. ${order.total}</p>
       `,
     };
 

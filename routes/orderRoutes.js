@@ -139,7 +139,7 @@ router.post("/place", protect, async (req, res) => {
           )
           .join("")}
         <hr/>
-        <h3>Total: ₹${totalAmount}</h3>
+        <h3>Total: Rs. ${totalAmount}</h3>
       `,
     };
 
@@ -165,7 +165,7 @@ router.post("/place", protect, async (req, res) => {
           .join("")}
 
         <hr/>
-        <h3>Total Paid: ₹${totalAmount}</h3>
+        <h3>Total Paid: Rs. ${totalAmount}</h3>
 
         <p>We will contact you shortly for delivery updates.</p>
 
@@ -240,7 +240,7 @@ router.put("/update-status/:id", protect, async (req, res) => {
       <p>Hi ${user.username},</p>
       <p>Your order has been delivered successfully.</p>
       <p><strong>Order ID:</strong> ${order._id}</p>
-      <p><strong>Total Paid:</strong> ₹${order.totalAmount}</p>
+      <p><strong>Total Paid:</strong> Rs. ${order.totalAmount}</p>
     `,
       };
 
