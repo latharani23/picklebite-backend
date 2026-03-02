@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ MongoDB Connected");
-  } catch (error) {
-    console.error("❌ MongoDB Error:", error);
-    process.exit(1);
-  }
-};
+const uri = "mongodb+srv://user:pass@cluster0.abcd.mongodb.net/mydatabase";
+mongoose
+  .connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 100,
+  })
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.log("❌ MongoDB Error:", err));
 
-module.exports = connectDB;
+const db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", () => {
+  console.log("Connected to MongoDB Atlas!");
+});
