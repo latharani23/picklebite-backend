@@ -129,7 +129,6 @@ router.post("/place", protect, async (req, res) => {
         <p><strong>Name:</strong> ${customer.name}</p>
         <p><strong>Email:</strong> ${req.user.email}</p>
         <p><strong>Phone:</strong> ${customer.phone}</p>
-        <p><strong>Pincode:</strong> ${customer.pincode}</p>
         <p><strong>Address:</strong> ${customer.address}</p>
         <hr/>
         <h3>Items:</h3>
