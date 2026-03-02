@@ -155,38 +155,25 @@ router.post("/admin-login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const admin = await User.findOne({ email });
-
-    if (!admin) {
-      return res.status(400).json({ message: "Admin not found" });
+    if (
+      email !== process.env.ADMIN_EMAIL ||
+      password !== process.env.ADMIN_PASSWORD
+    ) {
+      return res.status(400).json({ message: "Invalid admin credentials" });
     }
 
-    // 🔴 Check role
-    if (admin.role !== "admin") {
-      return res.status(403).json({ message: "Access denied. Not an admin." });
-    }
-
-    const isMatch = await bcrypt.compare(password, admin.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
-    }
-
-    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
     res.json({
       token,
       user: {
-        id: admin._id,
-        username: admin.username,
-        email: admin.email,
-        role: admin.role,
+        email: process.env.ADMIN_EMAIL,
+        role: "admin",
       },
     });
   } catch (error) {
-    console.log("ADMIN LOGIN ERROR:", error);
     res.status(500).json({ message: error.message });
   }
 });
