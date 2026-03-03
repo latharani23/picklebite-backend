@@ -163,17 +163,24 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 
 const app = express();
 
 /* ================= ALLOWED ORIGINS ================= */
 
+// const allowedOrigins = [
+//   "http://localhost:3002",
+//   "https://www.picklebite.in",
+//   "https://picklebite.in",
+// ];
 const allowedOrigins = [
+  "http://localhost:3001",
+  "http://localhost:3000",
   "http://localhost:3002",
   "https://www.picklebite.in",
   "https://picklebite.in",
 ];
-
 /* ================= SOCKET SETUP ================= */
 
 const server = http.createServer(app);
@@ -219,6 +226,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/comments", commentRoutes);
 
 /* ================= HEALTH CHECK ================= */
 
