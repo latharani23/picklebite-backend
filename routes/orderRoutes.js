@@ -3,7 +3,6 @@ const Order = require("../models/Order");
 const protect = require("../middleware/authMiddleware");
 const User = require("../models/User");
 const axios = require("axios");
-const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 const router = express.Router();
 
 /* ================= PLACE ORDER ================= */
@@ -37,6 +36,7 @@ router.post("/place", protect, async (req, res) => {
       paymentStatus: "PAID",
       orderStatus: "PLACED",
     });
+    const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 
     // Send Email (Customer + Admin)
     await axios.post(
@@ -158,7 +158,7 @@ router.put("/update-status/:id", protect, async (req, res) => {
 
     if (status === "DELIVERED") {
       const user = await User.findById(order.userId);
-
+      const shortOrderId = order._id.toString().slice(-6).toUpperCase();
       await axios.post(
         "https://api.brevo.com/v3/smtp/email",
         {
