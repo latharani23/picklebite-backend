@@ -85,7 +85,7 @@ router.post("/place", protect, async (req, res) => {
       )
       .join("")}
 
-    <p><strong>Order ID:</strong> PB-${shortOrderId}</p>
+    <p><strong>Order ID:</strong> ${shortOrderId}</p>
     <p><strong>Total Amount Paid:</strong> Rs. ${totalAmount}</p>
 
     <br/>
@@ -204,7 +204,7 @@ router.put("/update-status/:id", protect, async (req, res) => {
       )
       .join("")}
 
-    <p><strong>Order ID:</strong> PB-${shortOrderId}</p>
+    <p><strong>Order ID:</strong> ${shortOrderId}</p>
     <p><strong>Total Amount Paid:</strong> Rs. ${order.totalAmount}</p>
 
     <br/>
