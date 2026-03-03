@@ -41,24 +41,20 @@ router.post("/place", protect, async (req, res) => {
     });
 
     /* ================= EMAIL SETUP ================= */
-
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
+      host: "smtp-relay.brevo.com",
       port: 587,
       secure: false,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
+        user: process.env.BREVO_USER,
+        pass: process.env.BREVO_PASS,
       },
     });
 
     /* ================= ADMIN EMAIL ================= */
 
     const adminMail = {
-      from: process.env.EMAIL_USER,
+      from: '"Pickle Bite" <picklebiteco@gmail.com>',
       to: "picklebiteco@gmail.com",
       subject: "🛒 New PickleBite Order Received",
       html: `
@@ -84,7 +80,7 @@ router.post("/place", protect, async (req, res) => {
     /* ================= CUSTOMER EMAIL ================= */
 
     const customerMail = {
-      from: process.env.EMAIL_USER,
+      from: '"Pickle Bite" <picklebiteco@gmail.com>',
       to: customer.email,
       subject: "✅ Your PickleBite Order Confirmation",
       html: `
@@ -165,20 +161,16 @@ router.put("/update-status/:id", protect, async (req, res) => {
       console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
 
       const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
+        host: "smtp-relay.brevo.com",
         port: 587,
-        secure: false, // important
+        secure: false,
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-        tls: {
-          rejectUnauthorized: false,
+          user: process.env.BREVO_USER,
+          pass: process.env.BREVO_PASS,
         },
       });
-
       const deliveryMail = {
-        from: process.env.EMAIL_USER,
+        from: '"Pickle Bite" <picklebiteco@gmail.com>',
         to: user.email, // ✅ fetched from DB
         subject: "🎉 Your PickleBite Order Delivered Successfully",
         html: `
