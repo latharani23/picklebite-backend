@@ -45,10 +45,14 @@ router.post("/place", protect, async (req, res) => {
       host: "smtp-relay.brevo.com",
       port: 587,
       secure: false,
+      requireTLS: true,
       auth: {
         user: process.env.BREVO_USER,
         pass: process.env.BREVO_PASS,
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
 
     /* ================= ADMIN EMAIL ================= */
@@ -164,10 +168,14 @@ router.put("/update-status/:id", protect, async (req, res) => {
         host: "smtp-relay.brevo.com",
         port: 587,
         secure: false,
+        requireTLS: true,
         auth: {
           user: process.env.BREVO_USER,
           pass: process.env.BREVO_PASS,
         },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
       });
       const deliveryMail = {
         from: '"Pickle Bite" <picklebiteco@gmail.com>',
