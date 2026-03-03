@@ -3,8 +3,7 @@ const Order = require("../models/Order");
 const protect = require("../middleware/authMiddleware");
 const User = require("../models/User");
 const axios = require("axios");
-const shortOrderId = order._id.toString().slice(-6);
-
+const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 const router = express.Router();
 
 /* ================= PLACE ORDER ================= */
@@ -86,7 +85,7 @@ router.post("/place", protect, async (req, res) => {
       )
       .join("")}
 
-    <p><strong>Order ID:</strong> ${shortOrderId}</p>
+    <p><strong>Order ID:</strong> PB-${shortOrderId}</p>
     <p><strong>Total Amount Paid:</strong> Rs. ${totalAmount}</p>
 
     <br/>
@@ -205,7 +204,7 @@ router.put("/update-status/:id", protect, async (req, res) => {
       )
       .join("")}
 
-    <p><strong>Order ID:</strong> ${shortOrderId}</p>
+    <p><strong>Order ID:</strong> PB-${shortOrderId}</p>
     <p><strong>Total Amount Paid:</strong> Rs. ${order.totalAmount}</p>
 
     <br/>
