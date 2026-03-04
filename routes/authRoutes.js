@@ -103,7 +103,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // ✅ ADMIN LOGIN
+    // ✅ ADMIN LOGIN FIRST
     if (
       email === process.env.ADMIN_EMAIL &&
       password === process.env.ADMIN_PASSWORD
@@ -116,7 +116,7 @@ router.post("/login", async (req, res) => {
         token,
         user: {
           role: "admin",
-          email: email,
+          email,
         },
       });
     }
