@@ -115,6 +115,33 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+router.get("/admin/users", adminAuth, async (req, res) => {
+  const users = await User.find().select("name email phone address");
+  res.json(users);
+});
+
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(400).json({ message: "Email not found" });
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  user.resetToken = token;
+  await user.save();
+
+  const resetLink = `https://yourwebsite.com/reset-password/${token}`;
+
+  // Send email
+  await sendEmail(email, resetLink);
+
+  res.json({ message: "Password reset link sent to email" });
+});
+
 /* ================= LOGIN ================= */
 router.post("/login", async (req, res) => {
   try {

@@ -51,10 +51,9 @@ router.post("/place", protect, async (req, res) => {
             email: customer.email,
             name: customer.name,
           },
-        ],
-        bcc: [
           {
             email: process.env.ADMIN_RECEIVER_EMAIL,
+            name: "Pickle Bite Admin",
           },
         ],
         subject: "🛒 PickleBite Order Confirmation",
@@ -79,6 +78,8 @@ router.post("/place", protect, async (req, res) => {
         <strong>Weight:</strong> ${item.selectedWeight} <br/>
         <strong>Quantity:</strong> ${item.quantity} <br/>
         <strong>Price:</strong> Rs. ${item.price}
+        <p><b>Customer Phone:</b> ${order.customer.phone}</p>
+<p><b>Delivery Address:</b> ${order.customer.address}</p>
       </p>
       <hr/>
     `,
@@ -168,13 +169,12 @@ router.put("/update-status/:id", protect, async (req, res) => {
           },
           to: [
             {
-              email: user.email,
-              name: user.username,
+              email: customer.email,
+              name: customer.name,
             },
-          ],
-          bcc: [
             {
               email: process.env.ADMIN_RECEIVER_EMAIL,
+              name: "Pickle Bite Admin",
             },
           ],
           subject: "🎉 Your PickleBite Order Delivered",
