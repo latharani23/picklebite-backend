@@ -19,8 +19,7 @@ router.post("/place", protect, async (req, res) => {
     //   (sum, item) => sum + item.price * item.quantity,
     //   0,
     // );
-    const totalAmount = calculateComboPrice(items);
-
+    const totalAmount = calculateComboPrice(cart);
     // Create order
     const order = await Order.create({
       userId: req.user._id,
@@ -59,56 +58,55 @@ router.post("/place", protect, async (req, res) => {
         ],
         subject: "🛒 PickleBite Order Confirmation",
         htmlContent: `
-  <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-    
-    <h2 style="color:#0a7f3f;">🛒 Pickle Bite Order Confirmation</h2>
+<div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+  
+<h2 style="color:#0a7f3f;">🛒 Pickle Bite Order Confirmation</h2>
 
-    <p>Hi ${customer.name},</p>
-    <p><strong>Thank you for ordering with us!</strong></p>
-    <p>Your order has been placed successfully.</p>
+<p>Hi ${customer.name},</p>
+<p><strong>Thank you for ordering with us!</strong></p>
+<p>Your order has been placed successfully.</p>
 
-    <hr/>
+<hr/>
 
-    <h3>📦 Order Details</h3>
+<h3>👤 Customer Details</h3>
+<p><b>Phone:</b> ${customer.phone}</p>
+<p><b>Delivery Address:</b> ${customer.address}</p>
 
-    ${cart
-      .map(
-        (item) => `
-      <p>
-        <strong>Product:</strong> ${item.name} <br/>
-        <strong>Weight:</strong> ${item.selectedWeight} <br/>
-        <strong>Quantity:</strong> ${item.quantity} <br/>
-        <strong>Price:</strong> Rs. ${item.price}
-        <p><b>Customer Phone:</b> ${order.customer.phone}</p>
-<p><b>Delivery Address:</b> ${order.customer.address}</p>
-      </p>
-      <hr/>
-    `,
-      )
-      .join("")}
+<hr/>
 
-    <p><strong>Order ID:</strong> ${shortOrderId}</p>
-    <p><strong>Total Amount Paid:</strong> Rs. ${totalAmount}</p>
+<h3>📦 Order Items</h3>
 
-    <br/>
+${cart
+  .map(
+    (item) => `
+<p>
+<strong>Product:</strong> ${item.name}<br/>
+<strong>Weight:</strong> ${item.selectedWeight}<br/>
+<strong>Quantity:</strong> ${item.quantity}<br/>
+<strong>Price:</strong> Rs. ${item.price}
+</p>
+<hr/>
+`,
+  )
+  .join("")}
 
-    <p>We will contact you shortly regarding delivery.</p>
+<p><strong>Order ID:</strong> ${shortOrderId}</p>
+<p><strong>Total Amount Paid:</strong> Rs. ${totalAmount}</p>
 
-    <br/>
-    <hr/>
+<br/>
 
-    <p style="font-size:14px;">
-      Regards,<br/>
-      <strong>Pickle Bite Support Team</strong><br/>
-      📧 support@picklebite.in<br/>
-      📍 Bangalore, India
-    </p>
+<p>We will contact you shortly regarding delivery.</p>
 
-    <p style="font-size:12px; color:gray;">
-      Thank you for choosing Pickle Bite 💛
-    </p>
+<hr/>
 
-  </div>
+<p style="font-size:14px;">
+Regards,<br/>
+<strong>Pickle Bite Support Team</strong><br/>
+📧 support@picklebite.in<br/>
+📍 Bangalore, India
+</p>
+
+</div>
 `,
       },
       {
@@ -143,20 +141,18 @@ router.get("/my-orders", protect, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+function calculateComboPrice(cart) {
+  const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-function calculateComboPrice(items) {
-  const quantity = items.length;
-
-  if (quantity === 2) {
+  if (totalQuantity === 2) {
     return 349;
   }
 
-  if (quantity === 3) {
-    return 549;
+  if (totalQuantity === 3) {
+    return 499;
   }
 
-  // Normal pricing
-  return items.reduce((sum, item) => sum + item.price, 0);
+  return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
 
 /* ================= UPDATE ORDER STATUS ================= */
@@ -185,8 +181,8 @@ router.put("/update-status/:id", protect, async (req, res) => {
           },
           to: [
             {
-              email: customer.email,
-              name: customer.name,
+              email: user.email,
+              name: user.username,
             },
             {
               email: process.env.ADMIN_RECEIVER_EMAIL,
@@ -195,54 +191,55 @@ router.put("/update-status/:id", protect, async (req, res) => {
           ],
           subject: "🎉 Your PickleBite Order Delivered",
           htmlContent: `
-  <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-    
-    <h2 style="color:#0a7f3f;">🎉 Your Pickle Bite Order Has Been Delivered!</h2>
+<div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+  
+<h2 style="color:#0a7f3f;">🎉 Your Pickle Bite Order Has Been Delivered!</h2>
 
-    <p>Hi ${user.username},</p>
-    <p><strong>Great news!</strong> Your order has been successfully delivered.</p>
+<p>Hi ${user.username},</p>
+<p><strong>Great news!</strong> Your order has been successfully delivered.</p>
 
-    <hr/>
+<hr/>
 
-    <h3>📦 Delivered Items</h3>
+<h3>👤 Customer Details</h3>
+<p><b>Phone:</b> ${order.customer.phone}</p>
+<p><b>Delivery Address:</b> ${order.customer.address}</p>
 
-    ${order.items
-      .map(
-        (item) => `
-      <p>
-        <strong>Product:</strong> ${item.name} <br/>
-        <strong>Weight:</strong> ${item.weight} <br/>
-        <strong>Quantity:</strong> ${item.quantity} <br/>
-        <strong>Price:</strong> Rs. ${item.price}
-      </p>
-      <hr/>
-    `,
-      )
-      .join("")}
+<hr/>
 
-    <p><strong>Order ID:</strong> ${shortOrderId}</p>
-    <p><strong>Total Amount Paid:</strong> Rs. ${order.totalAmount}</p>
+<h3>📦 Delivered Items</h3>
 
-    <br/>
+${order.items
+  .map(
+    (item) => `
+<p>
+<strong>Product:</strong> ${item.name}<br/>
+<strong>Weight:</strong> ${item.weight}<br/>
+<strong>Quantity:</strong> ${item.quantity}<br/>
+<strong>Price:</strong> Rs. ${item.price}
+</p>
+<hr/>
+`,
+  )
+  .join("")}
 
-    <p>We hope you enjoy your pickles 💛</p>
-    <p>If you loved the taste, we’d be happy if you recommend us to your friends and family!</p>
+<p><strong>Order ID:</strong> ${shortOrderId}</p>
+<p><strong>Total Amount Paid:</strong> Rs. ${order.totalAmount}</p>
 
-    <br/>
-    <hr/>
+<br/>
 
-    <p style="font-size:14px;">
-      Regards,<br/>
-      <strong>Pickle Bite Support Team</strong><br/>
-      📧 support@picklebite.in<br/>
-      📍 Bangalore, India
-    </p>
+<p>We hope you enjoy your pickles 💛</p>
+<p>If you loved the taste, please recommend Pickle Bite to friends and family.</p>
 
-    <p style="font-size:12px; color:gray;">
-      Thank you for choosing Pickle Bite ❤️
-    </p>
+<hr/>
 
-  </div>
+<p style="font-size:14px;">
+Regards,<br/>
+<strong>Pickle Bite Support Team</strong><br/>
+📧 support@picklebite.in<br/>
+📍 Bangalore, India
+</p>
+
+</div>
 `,
         },
         {
