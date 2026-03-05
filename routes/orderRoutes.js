@@ -15,10 +15,11 @@ router.post("/place", protect, async (req, res) => {
       return res.status(400).json({ message: "Invalid order data" });
     }
 
-    const totalAmount = cart.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0,
-    );
+    // const totalAmount = cart.reduce(
+    //   (sum, item) => sum + item.price * item.quantity,
+    //   0,
+    // );
+    const totalAmount = calculateComboPrice(items);
 
     // Create order
     const order = await Order.create({
@@ -142,6 +143,21 @@ router.get("/my-orders", protect, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+function calculateComboPrice(items) {
+  const quantity = items.length;
+
+  if (quantity === 2) {
+    return 349;
+  }
+
+  if (quantity === 3) {
+    return 549;
+  }
+
+  // Normal pricing
+  return items.reduce((sum, item) => sum + item.price, 0);
+}
 
 /* ================= UPDATE ORDER STATUS ================= */
 
