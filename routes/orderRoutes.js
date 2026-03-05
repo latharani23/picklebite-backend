@@ -22,7 +22,7 @@ router.post("/place", protect, async (req, res) => {
     const totalAmount = calculateComboPrice(cart);
     // Create order
     const order = await Order.create({
-      userId: req.user.id, // ✅ important
+      userId: req.user._id, // must use _id
       items: cart.map((item) => ({
         productId: item.id,
         name: item.name,

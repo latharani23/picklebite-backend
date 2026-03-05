@@ -13,20 +13,6 @@ const protect = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    /* ===== ADMIN ===== */
-
-    if (decoded.role === "admin") {
-      req.user = {
-        id: decoded.id || null,
-        role: "admin",
-        email: decoded.email,
-      };
-
-      return next();
-    }
-
-    /* ===== NORMAL USER ===== */
-
     const user = await User.findById(decoded.id).select("-password");
 
     if (!user) {
@@ -34,7 +20,7 @@ const protect = async (req, res, next) => {
     }
 
     req.user = {
-      id: user._id, // always use id
+      _id: user._id, // FIX HERE
       username: user.username,
       email: user.email,
       role: "user",
@@ -42,7 +28,7 @@ const protect = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error("AUTH ERROR:", error.message);
+    console.log("AUTH ERROR:", error);
     return res.status(401).json({ message: "Invalid token" });
   }
 };
