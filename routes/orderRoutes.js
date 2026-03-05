@@ -22,7 +22,7 @@ router.post("/place", protect, async (req, res) => {
     const totalAmount = calculateComboPrice(cart);
     // Create order
     const order = await Order.create({
-      userId: req.user._id,
+      userId: req.user.id, // ✅ important
       items: cart.map((item) => ({
         productId: item.id,
         name: item.name,
@@ -123,8 +123,8 @@ Regards,<br/>
       order,
     });
   } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).json({ message: "Email or Order failed" });
+    console.error("ORDER ERROR:", error);
+    res.status(500).json({ message: error.message });
   }
 });
 
