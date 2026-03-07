@@ -2,10 +2,13 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const protect = require("../middleware/authMiddleware");
 const adminAuth = require("../middleware/adminAuth");
+
 const router = express.Router();
 
-/* ================= SIGNUP ================= */
+/* ================= USER SIGNUP ================= */
+
 router.post("/signup", async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -17,7 +20,9 @@ router.post("/signup", async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(400).json({ message: "Email already registered" });
+      return res.status(400).json({
+        message: "Email already registered. Please login.",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -26,6 +31,7 @@ router.post("/signup", async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      role: "user",
     });
 
     res.status(201).json({
@@ -33,105 +39,30 @@ router.post("/signup", async (req, res) => {
       userId: newUser._id,
     });
   } catch (error) {
-    console.log("SIGNUP ERROR:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-router.get("/admin/users", adminAuth, async (req, res) => {
-  const users = await User.find().select("name email phone address");
-  res.json(users);
-});
+/* ================= USER LOGIN ================= */
 
-router.post("/forgot-password", async (req, res) => {
-  const { email } = req.body;
-
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return res.status(400).json({ message: "Email not found" });
-  }
-
-  const token = crypto.randomBytes(32).toString("hex");
-
-  user.resetToken = token;
-  await user.save();
-
-  const resetLink = `https://yourwebsite.com/reset-password/${token}`;
-
-  // Send email
-  await sendEmail(email, resetLink);
-
-  res.json({ message: "Password reset link sent to email" });
-});
-
-/* ================= LOGIN ================= */
-// router.post("/login", async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-
-//     const user = await User.findOne({ email });
-
-//     if (!user) {
-//       return res.status(400).json({ message: "User not found" });
-//     }
-
-//     const isMatch = await bcrypt.compare(password, user.password);
-
-//     if (!isMatch) {
-//       return res.status(400).json({ message: "Invalid password" });
-//     }
-
-//     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: "1d",
-//     });
-
-//     res.json({
-//       token,
-//       user: {
-//         id: user._id,
-//         username: user.username,
-//         email: user.email,
-//       },
-//     });
-//   } catch (error) {
-//     console.log("LOGIN ERROR:", error);
-//     res.status(500).json({ message: error.message });
-//   }
-// });
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // ✅ ADMIN LOGIN FIRST
-    if (
-      email === process.env.ADMIN_EMAIL &&
-      password === process.env.ADMIN_PASSWORD
-    ) {
-      const token = jwt.sign({ role: "admin", email }, process.env.JWT_SECRET, {
-        expiresIn: "1d",
-      });
-
-      return res.json({
-        token,
-        user: {
-          role: "admin",
-          email,
-        },
-      });
-    }
-
-    // ✅ NORMAL USER LOGIN
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({
+        message: "User not found",
+      });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({
+        message: "Invalid password",
+      });
     }
 
     const token = jwt.sign(
@@ -150,11 +81,12 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (error) {
-    console.log("LOGIN ERROR:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 });
+
 /* ================= ADMIN LOGIN ================= */
+
 router.post("/admin-login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -163,12 +95,12 @@ router.post("/admin-login", async (req, res) => {
       email !== process.env.ADMIN_EMAIL ||
       password !== process.env.ADMIN_PASSWORD
     ) {
-      return res.status(400).json({
+      return res.status(401).json({
         message: "Invalid admin credentials",
       });
     }
 
-    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ role: "admin", email }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
@@ -176,7 +108,37 @@ router.post("/admin-login", async (req, res) => {
       token,
       role: "admin",
     });
-  } catch (err) {
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* ================= USER PROFILE ================= */
+
+router.get("/profile", protect, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+/* ================= ADMIN GET USERS ================= */
+
+router.get("/admin/users", adminAuth, async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+
+    res.json(users);
+  } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 });

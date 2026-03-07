@@ -38,7 +38,86 @@ router.post("/place", protect, async (req, res) => {
     });
     const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 
-    // Send Email (Customer + Admin)
+    //     // Send Email (Customer + Admin)
+    //     await axios.post(
+    //       "https://api.brevo.com/v3/smtp/email",
+    //       {
+    //         sender: {
+    //           name: "Pickle Bite",
+    //           email: process.env.SENDER_EMAIL,
+    //         },
+    //         to: [
+    //           {
+    //             email: customer.email,
+    //             name: customer.name,
+    //           },
+    //           {
+    //             email: process.env.ADMIN_RECEIVER_EMAIL,
+    //             name: "Pickle Bite Admin",
+    //           },
+    //         ],
+    //         subject: "🛒 PickleBite Order Confirmation",
+    //         htmlContent: `
+    // <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+
+    // <h2 style="color:#0a7f3f;">🛒 Pickle Bite Order Confirmation</h2>
+
+    // <p>Hi ${customer.name},</p>
+    // <p><strong>Thank you for ordering with us!</strong></p>
+    // <p>Your order has been placed successfully.</p>
+
+    // <hr/>
+
+    // <h3>👤 Customer Details</h3>
+    // <p><b>Phone:</b> ${customer.phone}</p>
+    // <p><b>Delivery Address:</b> ${customer.address}</p>
+
+    // <hr/>
+
+    // <h3>📦 Order Items</h3>
+
+    // ${cart
+    //   .map(
+    //     (item) => `
+    // <p>
+    // <strong>Product:</strong> ${item.name}<br/>
+    // <strong>Weight:</strong> ${item.selectedWeight}<br/>
+    // <strong>Quantity:</strong> ${item.quantity}<br/>
+    // <strong>Price:</strong> Rs. ${item.price}
+    // </p>
+    // <hr/>
+    // `,
+    //   )
+    //   .join("")}
+
+    // <p><strong>Order ID:</strong> ${shortOrderId}</p>
+    // <p><strong>Total Amount Paid:</strong> Rs. ${totalAmount}</p>
+
+    // <br/>
+
+    // <p>We will contact you shortly regarding delivery.</p>
+
+    // <hr/>
+
+    // <p style="font-size:14px;">
+    // Regards,<br/>
+    // <strong>Pickle Bite Support Team</strong><br/>
+    // 📧 support@picklebite.in<br/>
+    // 📍 Bangalore, India
+    // </p>
+
+    // </div>
+    // `,
+    //       },
+    //       {
+    //         headers: {
+    //           "api-key": process.env.BREVO_API_KEY,
+    //           "Content-Type": "application/json",
+    //         },
+    //       },
+    //     );
+
+    // EMAIL TO CUSTOMER
     await axios.post(
       "https://api.brevo.com/v3/smtp/email",
       {
@@ -51,62 +130,22 @@ router.post("/place", protect, async (req, res) => {
             email: customer.email,
             name: customer.name,
           },
-          {
-            email: process.env.ADMIN_RECEIVER_EMAIL,
-            name: "Pickle Bite Admin",
-          },
         ],
-        subject: "🛒 PickleBite Order Confirmation",
+        subject: "🛒 Pickle Bite Order Confirmation",
         htmlContent: `
-<div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-  
-<h2 style="color:#0a7f3f;">🛒 Pickle Bite Order Confirmation</h2>
+<h2>Thank you for ordering from Pickle Bite!</h2>
 
 <p>Hi ${customer.name},</p>
-<p><strong>Thank you for ordering with us!</strong></p>
+
 <p>Your order has been placed successfully.</p>
 
-<hr/>
-
-<h3>👤 Customer Details</h3>
-<p><b>Phone:</b> ${customer.phone}</p>
-<p><b>Delivery Address:</b> ${customer.address}</p>
-
-<hr/>
-
-<h3>📦 Order Items</h3>
-
-${cart
-  .map(
-    (item) => `
-<p>
-<strong>Product:</strong> ${item.name}<br/>
-<strong>Weight:</strong> ${item.selectedWeight}<br/>
-<strong>Quantity:</strong> ${item.quantity}<br/>
-<strong>Price:</strong> Rs. ${item.price}
-</p>
-<hr/>
-`,
-  )
-  .join("")}
-
 <p><strong>Order ID:</strong> ${shortOrderId}</p>
-<p><strong>Total Amount Paid:</strong> Rs. ${totalAmount}</p>
 
-<br/>
+<p><strong>Total Amount:</strong> Rs. ${totalAmount}</p>
 
 <p>We will contact you shortly regarding delivery.</p>
 
-<hr/>
-
-<p style="font-size:14px;">
-Regards,<br/>
-<strong>Pickle Bite Support Team</strong><br/>
-📧 support@picklebite.in<br/>
-📍 Bangalore, India
-</p>
-
-</div>
+<p>Thank you for supporting homemade pickles ❤️</p>
 `,
       },
       {
@@ -116,7 +155,54 @@ Regards,<br/>
         },
       },
     );
+    // EMAIL TO ADMIN
+    await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "Pickle Bite",
+          email: process.env.SENDER_EMAIL,
+        },
+        to: [
+          {
+            email: process.env.ADMIN_RECEIVER_EMAIL,
+            name: "Pickle Bite Admin",
+          },
+        ],
+        subject: "🚨 New Pickle Bite Order Received",
+        htmlContent: `
+<h2>New Order Received</h2>
 
+<p><strong>Customer:</strong> ${customer.name}</p>
+<p><strong>Email:</strong> ${customer.email}</p>
+<p><strong>Phone:</strong> ${customer.phone}</p>
+<p><strong>Address:</strong> ${customer.address}</p>
+
+<h3>Order Items</h3>
+
+${cart
+  .map(
+    (item) => `
+<p>
+${item.name} - ${item.selectedWeight}<br/>
+Qty: ${item.quantity}<br/>
+Price: Rs. ${item.price}
+</p>
+`,
+  )
+  .join("")}
+
+<p><strong>Total:</strong> Rs. ${totalAmount}</p>
+<p><strong>Order ID:</strong> ${shortOrderId}</p>
+`,
+      },
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json",
+        },
+      },
+    );
     res.status(201).json({
       success: true,
       message: "Order placed & email sent",
