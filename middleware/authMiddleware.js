@@ -1,3 +1,40 @@
+// const jwt = require("jsonwebtoken");
+// const User = require("../models/User");
+
+// const protect = async (req, res, next) => {
+//   try {
+//     const authHeader = req.headers.authorization;
+
+//     if (!authHeader || !authHeader.startsWith("Bearer")) {
+//       return res.status(401).json({ message: "No token provided" });
+//     }
+
+//     const token = authHeader.split(" ")[1];
+
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+//     const user = await User.findById(decoded.id).select("-password");
+
+//     if (!user) {
+//       return res.status(401).json({ message: "User not found" });
+//     }
+
+//     req.user = {
+//       _id: user._id, // FIX HERE
+//       username: user.username,
+//       email: user.email,
+//       role: "user",
+//     };
+
+//     next();
+//   } catch (error) {
+//     console.log("AUTH ERROR:", error);
+//     return res.status(401).json({ message: "Invalid token" });
+//   }
+// };
+
+// module.exports = protect;
+
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
@@ -5,7 +42,7 @@ const protect = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer")) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "No token provided" });
     }
 
@@ -13,23 +50,19 @@ const protect = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findById(decoded.id).select("-password");
+    // 🔥 IMPORTANT FIX
+    const user = await User.findOne({ email: decoded.email });
 
     if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
 
-    req.user = {
-      _id: user._id, // FIX HERE
-      username: user.username,
-      email: user.email,
-      role: "user",
-    };
+    req.user = user;
 
     next();
   } catch (error) {
-    console.log("AUTH ERROR:", error);
-    return res.status(401).json({ message: "Invalid token" });
+    console.error(error);
+    res.status(401).json({ message: "Invalid token" });
   }
 };
 
