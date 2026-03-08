@@ -284,7 +284,7 @@ router.post("/place", async (req, res) => {
     const totalAmount = calculateComboPrice(cart);
 
     const order = await Order.create({
-      userId: customer.email, // use email instead of token user
+      userId: req.user._id,
       items: cart.map((item) => ({
         productId: item.id,
         name: item.name,
