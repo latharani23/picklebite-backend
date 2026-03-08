@@ -3,19 +3,28 @@ const fs = require("fs");
 const path = require("path");
 
 const generateInvoice = (order) => {
-  return new Promise((resolve) => {
-    const filePath = path.join(
-      __dirname,
-      `../invoices/invoice-${order._id}.pdf`,
-    );
+  return new Promise((resolve, reject) => {
+    const invoicesDir = path.join(__dirname, "../invoices");
+
+    // create folder if missing
+    if (!fs.existsSync(invoicesDir)) {
+      fs.mkdirSync(invoicesDir, { recursive: true });
+    }
+
+    const filePath = path.join(invoicesDir, `invoice-${order._id}.pdf`);
 
     const doc = new PDFDocument();
 
-    doc.pipe(fs.createWriteStream(filePath));
+    const stream = fs.createWriteStream(filePath);
 
-    doc.fontSize(20).text("Pickle Bite Invoice", { align: "center" });
+    doc.pipe(stream);
 
+    /* HEADER */
+
+    doc.fontSize(22).text("Pickle Bite Invoice", { align: "center" });
     doc.moveDown();
+
+    /* ORDER */
 
     doc.fontSize(12).text(`Order ID: ${order._id}`);
     doc.text(`Customer: ${order.customer.name}`);
@@ -39,7 +48,12 @@ const generateInvoice = (order) => {
 
     doc.end();
 
-    resolve(filePath);
+    // wait until file is fully written
+    stream.on("finish", () => {
+      resolve(filePath);
+    });
+
+    stream.on("error", reject);
   });
 };
 
