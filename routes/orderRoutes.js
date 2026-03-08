@@ -268,6 +268,8 @@ const express = require("express");
 const Order = require("../models/Order");
 const User = require("../models/User");
 const axios = require("axios");
+const fs = require("fs");
+const generateInvoice = require("../utils/generateInvoice");
 
 const router = express.Router();
 
@@ -298,7 +300,8 @@ router.post("/place", async (req, res) => {
       paymentStatus: "PAID",
       orderStatus: "PLACED",
     });
-
+    const invoicePath = await generateInvoice(order);
+    const invoiceFile = fs.readFileSync(invoicePath);
     const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 
     /* ================= EMAIL ================= */
@@ -369,6 +372,12 @@ support@picklebite.in
 
 </div>
 `,
+        attachment: [
+          {
+            content: invoiceFile.toString("base64"),
+            name: `PickleBite-Invoice-${shortOrderId}.pdf`,
+          },
+        ],
       },
       {
         headers: {
