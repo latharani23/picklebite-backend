@@ -269,7 +269,6 @@ const Order = require("../models/Order");
 const User = require("../models/User");
 const axios = require("axios");
 const fs = require("fs");
-const { createShipment } = require("../utils/shiprocket");
 const generateInvoice = require("../utils/generateInvoice");
 
 const router = express.Router();
@@ -286,24 +285,8 @@ router.post("/place", async (req, res) => {
 
     const totalAmount = calculateComboPrice(cart);
 
-    // const order = await Order.create({
-    //   userId: req.user?._id || null,
-    //   items: cart.map((item) => ({
-    //     productId: item.id,
-    //     name: item.name,
-    //     price: item.price,
-    //     quantity: item.quantity,
-    //     weight: item.selectedWeight,
-    //   })),
-    //   customer,
-    //   paymentMethod,
-    //   totalAmount,
-    //   paymentStatus: "PAID",
-    //   orderStatus: "PLACED",
-    // });
     const order = await Order.create({
       userId: req.user?._id || null,
-
       items: cart.map((item) => ({
         productId: item.id,
         name: item.name,
@@ -311,17 +294,7 @@ router.post("/place", async (req, res) => {
         quantity: item.quantity,
         weight: item.selectedWeight,
       })),
-
-      customer: {
-        name: customer.name,
-        email: customer.email,
-        phone: customer.phone,
-        address: customer.address,
-        city: customer.city,
-        state: customer.state,
-        pincode: customer.pincode,
-      },
-
+      customer,
       paymentMethod,
       totalAmount,
       paymentStatus: "PAID",
@@ -476,20 +449,7 @@ router.put("/update-status/:id", async (req, res) => {
     order.orderStatus = status;
 
     await order.save();
-    // Create shipment in Shiprocket
-    try {
-      const shipment = await createShipment(order);
 
-      order.trackingNumber = shipment.awb_code;
-      order.shipmentId = shipment.shipment_id;
-
-      await order.save();
-    } catch (err) {
-      console.log(
-        "Shiprocket shipment error:",
-        err.response?.data || err.message,
-      );
-    }
     if (status === "DELIVERED") {
       const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 
