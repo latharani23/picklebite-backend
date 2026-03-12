@@ -286,6 +286,21 @@ router.post("/place", async (req, res) => {
 
     const totalAmount = calculateComboPrice(cart);
 
+    // const order = await Order.create({
+    //   userId: req.user?._id || null,
+    //   items: cart.map((item) => ({
+    //     productId: item.id,
+    //     name: item.name,
+    //     price: item.price,
+    //     quantity: item.quantity,
+    //     weight: item.selectedWeight,
+    //   })),
+    //   customer,
+    //   paymentMethod,
+    //   totalAmount,
+    //   paymentStatus: "PAID",
+    //   orderStatus: "PLACED",
+    // });
     const order = await Order.create({
       userId: req.user?._id || null,
       items: cart.map((item) => ({
