@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const http = require("http");
+const { getShippingRate } = require("./routes/shipping");
 const { Server } = require("socket.io");
 
 require("dotenv").config();
@@ -78,7 +79,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api", contactRoutes);
-
+app.post("/api/shipping-rate", getShippingRate);
 /* ================= HEALTH CHECK ================= */
 
 app.get("/", (req, res) => {
