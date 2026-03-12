@@ -6,7 +6,7 @@ async function getShiprocketToken() {
     {
       email: process.env.SHIPROCKET_EMAIL,
       password: process.env.SHIPROCKET_PASSWORD,
-    }
+    },
   );
 
   return login.data.token;
@@ -32,7 +32,7 @@ async function createShipment(order) {
       billing_country: "India",
       billing_phone: order.customer.phone,
 
-      order_items: order.cart.map((item) => ({
+      order_items: order.items.map((item) => ({
         name: item.name,
         sku: item.name,
         units: item.quantity,
@@ -40,8 +40,7 @@ async function createShipment(order) {
       })),
 
       payment_method: "Prepaid",
-
-      sub_total: order.total,
+      sub_total: order.totalAmount,
 
       length: 10,
       breadth: 10,
@@ -52,7 +51,7 @@ async function createShipment(order) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }
+    },
   );
 
   return response.data;
