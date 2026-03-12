@@ -269,6 +269,7 @@ const Order = require("../models/Order");
 const User = require("../models/User");
 const axios = require("axios");
 const fs = require("fs");
+const { createShipment } = require("../utils/shiprocket");
 const generateInvoice = require("../utils/generateInvoice");
 
 const router = express.Router();
@@ -300,6 +301,27 @@ router.post("/place", async (req, res) => {
       paymentStatus: "PAID",
       orderStatus: "PLACED",
     });
+    /* ================= CREATE SHIPMENT ================= */
+    if (!customer.pincode || customer.pincode.length !== 6) {
+      throw new Error("Invalid delivery pincode");
+    }
+    try {
+      const shipment = await createShipment(order);
+
+      order.shipmentId = shipment.shipment_id;
+      order.awbCode = shipment.awb_code;
+      order.courier = shipment.courier_name;
+      order.trackingUrl = `https://shiprocket.co/tracking/${shipment.awb_code}`;
+
+      order.orderStatus = "CONFIRMED";
+
+      await order.save();
+    } catch (shipErr) {
+      console.error(
+        "Shiprocket Error:",
+        shipErr.response?.data || shipErr.message,
+      );
+    }
     const invoicePath = await generateInvoice(order);
     const invoiceFile = fs.readFileSync(invoicePath);
     const shortOrderId = order._id.toString().slice(-6).toUpperCase();
