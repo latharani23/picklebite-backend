@@ -327,23 +327,6 @@ router.post("/place", async (req, res) => {
       paymentStatus: "PAID",
       orderStatus: "PLACED",
     });
-    /* ================= CREATE SHIPMENT ================= */
-
-    try {
-      const shipment = await createShipment(order);
-
-      order.trackingNumber = shipment.awb_code;
-      order.shipmentId = shipment.shipment_id;
-
-      await order.save();
-
-      console.log("Shipment created:", shipment);
-    } catch (err) {
-      console.log(
-        "Shiprocket shipment error:",
-        err.response?.data || err.message,
-      );
-    }
     const invoicePath = await generateInvoice(order);
     const invoiceFile = fs.readFileSync(invoicePath);
     const shortOrderId = order._id.toString().slice(-6).toUpperCase();
@@ -494,7 +477,19 @@ router.put("/update-status/:id", async (req, res) => {
 
     await order.save();
     // Create shipment in Shiprocket
+    try {
+      const shipment = await createShipment(order);
 
+      order.trackingNumber = shipment.awb_code;
+      order.shipmentId = shipment.shipment_id;
+
+      await order.save();
+    } catch (err) {
+      console.log(
+        "Shiprocket shipment error:",
+        err.response?.data || err.message,
+      );
+    }
     if (status === "DELIVERED") {
       const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 
