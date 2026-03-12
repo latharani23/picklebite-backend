@@ -1,11 +1,10 @@
+const axios = require("axios");
+
 exports.getShippingRate = async (req, res) => {
   try {
     const { pincode } = req.body;
 
-    if (!pincode || pincode.length !== 6) {
-      return res.json({ deliveryCharge: 0 });
-    }
-
+    // 1️⃣ Login to Shiprocket
     const login = await axios.post(
       "https://apiv2.shiprocket.in/v1/external/auth/login",
       {
@@ -16,6 +15,7 @@ exports.getShippingRate = async (req, res) => {
 
     const token = login.data.token;
 
+    // 2️⃣ Call courier serviceability API
     const response = await axios.get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability",
       {
@@ -42,6 +42,6 @@ exports.getShippingRate = async (req, res) => {
     });
   } catch (err) {
     console.error("Shiprocket Error:", err.response?.data || err.message);
-    res.json({ deliveryCharge: 0 });
+    res.status(500).json({ error: "Shipping error" });
   }
 };
