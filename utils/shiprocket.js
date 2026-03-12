@@ -78,6 +78,7 @@ async function getShiprocketToken() {
 async function createShipment(order) {
   const token = await getShiprocketToken();
 
+  // 1️⃣ Create shipment
   const response = await axios.post(
     "https://apiv2.shiprocket.in/v1/external/orders/create/adhoc",
     {
@@ -120,7 +121,28 @@ async function createShipment(order) {
     },
   );
 
-  return response.data;
+  const shipment = response.data;
+
+  // 2️⃣ Assign courier + generate AWB
+  const awbResponse = await axios.post(
+    "https://apiv2.shiprocket.in/v1/external/courier/assign/awb",
+    {
+      shipment_id: shipment.shipment_id,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  const awbData = awbResponse.data.response.data;
+
+  return {
+    shipment_id: shipment.shipment_id,
+    awb_code: awbData.awb_code,
+    courier_name: awbData.courier_name,
+  };
 }
 
 module.exports = { createShipment };
