@@ -1,55 +1,3 @@
-// const mongoose = require("mongoose");
-
-// const orderSchema = new mongoose.Schema(
-//   {
-//     userId: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "User",
-//       required: true,
-//     },
-
-//     items: [
-//       {
-//         productId: String,
-//         name: String,
-//         price: Number,
-//         quantity: Number,
-//         weight: String,
-//       },
-//     ],
-
-//     customer: {
-//       name: String,
-//       email: String,
-//       phone: String,
-//       address: String,
-//     },
-
-//     paymentMethod: {
-//       type: String,
-//       default: "UPI",
-//     },
-
-//     totalAmount: {
-//       type: Number,
-//       required: true,
-//     },
-
-//     paymentStatus: {
-//       type: String,
-//       default: "PAID",
-//     },
-
-//     orderStatus: {
-//       type: String,
-//       default: "PLACED",
-//     },
-//   },
-//   { timestamps: true },
-// );
-
-// module.exports = mongoose.model("Order", orderSchema);
-
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
@@ -57,7 +5,7 @@ const orderSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: false, // allow guest checkout
+      required: false, // guest checkout allowed
     },
 
     items: [
@@ -75,6 +23,9 @@ const orderSchema = new mongoose.Schema(
       email: String,
       phone: String,
       address: String,
+      city: String,
+      state: String,
+      pincode: String,
     },
 
     paymentMethod: {
@@ -95,10 +46,13 @@ const orderSchema = new mongoose.Schema(
     orderStatus: {
       type: String,
       default: "PLACED",
-      trackingNumber: String,
-      shipmentId: String,
-      courier: String,
     },
+
+    /* ===== SHIPROCKET TRACKING ===== */
+
+    trackingNumber: String,
+    shipmentId: String,
+    courier: String,
   },
   { timestamps: true },
 );

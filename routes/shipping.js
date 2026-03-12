@@ -1,17 +1,11 @@
-const axios = require("axios");
-
 exports.getShippingRate = async (req, res) => {
   try {
     const { pincode } = req.body;
 
-    // ✅ Validate pincode first
-    if (!pincode || pincode.toString().length !== 6) {
-      return res.status(400).json({
-        error: "Invalid pincode",
-      });
+    if (!pincode || pincode.length !== 6) {
+      return res.json({ deliveryCharge: 0 });
     }
 
-    // 1️⃣ Login to Shiprocket
     const login = await axios.post(
       "https://apiv2.shiprocket.in/v1/external/auth/login",
       {
@@ -22,7 +16,6 @@ exports.getShippingRate = async (req, res) => {
 
     const token = login.data.token;
 
-    // 2️⃣ Check courier availability
     const response = await axios.get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability",
       {
@@ -49,6 +42,6 @@ exports.getShippingRate = async (req, res) => {
     });
   } catch (err) {
     console.error("Shiprocket Error:", err.response?.data || err.message);
-    res.status(500).json({ error: "Shipping error" });
+    res.json({ deliveryCharge: 0 });
   }
 };

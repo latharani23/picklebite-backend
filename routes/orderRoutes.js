@@ -303,6 +303,7 @@ router.post("/place", async (req, res) => {
     // });
     const order = await Order.create({
       userId: req.user?._id || null,
+
       items: cart.map((item) => ({
         productId: item.id,
         name: item.name,
@@ -310,12 +311,39 @@ router.post("/place", async (req, res) => {
         quantity: item.quantity,
         weight: item.selectedWeight,
       })),
-      customer,
+
+      customer: {
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+        address: customer.address,
+        city: customer.city,
+        state: customer.state,
+        pincode: customer.pincode,
+      },
+
       paymentMethod,
       totalAmount,
       paymentStatus: "PAID",
       orderStatus: "PLACED",
     });
+    /* ================= CREATE SHIPMENT ================= */
+
+    try {
+      const shipment = await createShipment(order);
+
+      order.trackingNumber = shipment.awb_code;
+      order.shipmentId = shipment.shipment_id;
+
+      await order.save();
+
+      console.log("Shipment created:", shipment);
+    } catch (err) {
+      console.log(
+        "Shiprocket shipment error:",
+        err.response?.data || err.message,
+      );
+    }
     const invoicePath = await generateInvoice(order);
     const invoiceFile = fs.readFileSync(invoicePath);
     const shortOrderId = order._id.toString().slice(-6).toUpperCase();
@@ -466,19 +494,7 @@ router.put("/update-status/:id", async (req, res) => {
 
     await order.save();
     // Create shipment in Shiprocket
-    try {
-      const shipment = await createShipment(order);
 
-      order.trackingNumber = shipment.awb_code;
-      order.shipmentId = shipment.shipment_id;
-
-      await order.save();
-    } catch (err) {
-      console.log(
-        "Shiprocket shipment error:",
-        err.response?.data || err.message,
-      );
-    }
     if (status === "DELIVERED") {
       const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 
