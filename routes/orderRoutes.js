@@ -269,6 +269,7 @@ const Order = require("../models/Order");
 const User = require("../models/User");
 const axios = require("axios");
 const fs = require("fs");
+const { createShipment } = require("../utils/shiprocket");
 const generateInvoice = require("../utils/generateInvoice");
 
 const router = express.Router();
@@ -449,7 +450,20 @@ router.put("/update-status/:id", async (req, res) => {
     order.orderStatus = status;
 
     await order.save();
+    // Create shipment in Shiprocket
+    try {
+      const shipment = await createShipment(order);
 
+      order.trackingNumber = shipment.awb_code;
+      order.shipmentId = shipment.shipment_id;
+
+      await order.save();
+    } catch (err) {
+      console.log(
+        "Shiprocket shipment error:",
+        err.response?.data || err.message,
+      );
+    }
     if (status === "DELIVERED") {
       const shortOrderId = order._id.toString().slice(-6).toUpperCase();
 

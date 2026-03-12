@@ -95,6 +95,9 @@ const orderSchema = new mongoose.Schema(
     orderStatus: {
       type: String,
       default: "PLACED",
+      trackingNumber: String,
+      shipmentId: String,
+      courier: String,
     },
   },
   { timestamps: true },
