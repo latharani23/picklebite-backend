@@ -4,6 +4,13 @@ exports.getShippingRate = async (req, res) => {
   try {
     const { pincode } = req.body;
 
+    // ✅ Validate pincode first
+    if (!pincode || pincode.toString().length !== 6) {
+      return res.status(400).json({
+        error: "Invalid pincode",
+      });
+    }
+
     // 1️⃣ Login to Shiprocket
     const login = await axios.post(
       "https://apiv2.shiprocket.in/v1/external/auth/login",
@@ -15,7 +22,7 @@ exports.getShippingRate = async (req, res) => {
 
     const token = login.data.token;
 
-    // 2️⃣ Call courier serviceability API
+    // 2️⃣ Check courier availability
     const response = await axios.get(
       "https://apiv2.shiprocket.in/v1/external/courier/serviceability",
       {
