@@ -5,7 +5,7 @@ const orderSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: false, // guest checkout allowed
+      required: false,
     },
 
     items: [
@@ -28,15 +28,9 @@ const orderSchema = new mongoose.Schema(
       pincode: String,
     },
 
-    paymentMethod: {
-      type: String,
-      default: "UPI",
-    },
+    paymentMethod: String,
 
-    totalAmount: {
-      type: Number,
-      required: true,
-    },
+    totalAmount: Number,
 
     paymentStatus: {
       type: String,
@@ -47,8 +41,6 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: "PLACED",
     },
-
-    /* ===== SHIPROCKET TRACKING ===== */
 
     trackingNumber: String,
     shipmentId: String,

@@ -40,6 +40,7 @@ async function createShipment(order) {
       })),
 
       payment_method: "Prepaid",
+
       sub_total: order.totalAmount,
 
       length: 10,
@@ -47,6 +48,7 @@ async function createShipment(order) {
       height: 10,
       weight: 0.5,
     },
+
     {
       headers: {
         Authorization: `Bearer ${token}`,
