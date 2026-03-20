@@ -278,16 +278,16 @@ const router = express.Router();
 
 router.post("/place", async (req, res) => {
   try {
-    const { customer, cart, paymentMethod } = req.body;
+    const { customer, cart, paymentMethod, subtotal, deliveryCharge, total } =
+      req.body;
 
     if (!customer || !cart || cart.length === 0) {
       return res.status(400).json({ message: "Invalid order data" });
     }
 
-    const totalAmount = calculateComboPrice(cart);
-
     const order = await Order.create({
       userId: req.user?._id || null,
+
       items: cart.map((item) => ({
         productId: item.id,
         name: item.name,
@@ -295,9 +295,15 @@ router.post("/place", async (req, res) => {
         quantity: item.quantity,
         weight: item.selectedWeight,
       })),
+
       customer,
       paymentMethod,
-      totalAmount,
+
+      // ⭐ ADD HERE
+      subtotal,
+      deliveryCharge,
+      totalAmount: total,
+
       paymentStatus: "PAID",
       orderStatus: "PLACED",
     });
@@ -327,19 +333,10 @@ router.post("/place", async (req, res) => {
 
       console.log("SHIPROCKET RESPONSE:", shipment);
 
-      const deliveryCharge =
-        shipment.freight_charge || shipment.shipping_charges || 0;
-
       order.shipmentId = shipment.shipment_id;
       order.awbCode = shipment.awb_code;
       order.courier = shipment.courier_name;
       order.trackingUrl = `https://shiprocket.co/tracking/${shipment.awb_code}`;
-
-      // ⭐ IMPORTANT FIX
-      order.deliveryCharge = deliveryCharge;
-      order.subtotal = order.totalAmount;
-      order.totalAmount = order.totalAmount + deliveryCharge;
-
       order.orderStatus = "CONFIRMED";
 
       await order.save();
