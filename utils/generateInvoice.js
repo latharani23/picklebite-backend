@@ -174,7 +174,7 @@ const generateInvoice = (order) => {
 
     doc.fontSize(10).fillColor("gray");
 
-    doc.text("Thank you for choosing Pickle Bite", 40, 750, {
+    doc.text("Thank you for choosing Picklebite", 40, 750, {
       align: "center",
     });
 

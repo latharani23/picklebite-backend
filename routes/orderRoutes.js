@@ -332,7 +332,7 @@ router.post("/place", async (req, res) => {
       "https://api.brevo.com/v3/smtp/email",
       {
         sender: {
-          name: "Pickle Bite",
+          name: "Picklebite",
           email: process.env.SENDER_EMAIL,
         },
         to: [
@@ -342,14 +342,14 @@ router.post("/place", async (req, res) => {
           },
           {
             email: process.env.ADMIN_RECEIVER_EMAIL,
-            name: "Pickle Bite Admin",
+            name: "Picklebite Admin",
           },
         ],
-        subject: "🛒 Pickle Bite Order Confirmation",
+        subject: "🛒 Picklebite Order Confirmation",
         htmlContent: `
 <div style="font-family: Arial; padding:20px">
 
-<h2 style="color:#0a7f3f">🛒 Pickle Bite Order Confirmation</h2>
+<h2 style="color:#0a7f3f">🛒 Picklebite Order Confirmation</h2>
 
 <p>Hi ${customer.name},</p>
 <p>Your order has been placed successfully.</p>
@@ -388,7 +388,7 @@ ${cart
 
 <p>
 Regards,<br/>
-<b>Pickle Bite Team</b><br/>
+<b>Picklebite Team</b><br/>
 support@picklebite.in
 </p>
 
@@ -479,7 +479,7 @@ router.put("/update-status/:id", async (req, res) => {
         "https://api.brevo.com/v3/smtp/email",
         {
           sender: {
-            name: "Pickle Bite",
+            name: "Picklebite",
             email: process.env.SENDER_EMAIL,
           },
           to: [
@@ -489,10 +489,10 @@ router.put("/update-status/:id", async (req, res) => {
             },
             {
               email: process.env.ADMIN_RECEIVER_EMAIL,
-              name: "Pickle Bite Admin",
+              name: "Picklebite Admin",
             },
           ],
-          subject: "🎉 Your Pickle Bite Order Delivered",
+          subject: "🎉 Your Picklebite Order Delivered",
           htmlContent: `
 <div style="font-family: Arial; padding:20px">
 
@@ -529,7 +529,7 @@ Price: Rs.${item.price}
 
 <p>
 Regards,<br/>
-<b>Pickle Bite Team</b>
+<b>Picklebite Team</b>
 </p>
 
 </div>

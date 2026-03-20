@@ -50,6 +50,13 @@ const cartSchema = new mongoose.Schema({
 
   totalItems: Number,
 
+  deliveryCharge: {
+    type: Number,
+    default: 0,
+  },
+
+  finalAmount: Number,
+
   subtotal: Number,
 
   comboApplied: {

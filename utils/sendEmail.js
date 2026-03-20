@@ -9,7 +9,7 @@ const sendOrderEmail = async (order) => {
     });
 
     const mailOptions = {
-      from: `"Pickle Bite" <${process.env.ADMIN_EMAIL}>`,
+      from: `"Picklebite" <${process.env.ADMIN_EMAIL}>`,
       to: process.env.ADMIN_EMAIL,
       subject: "🛒 New Pickle Order Received",
       html: `
