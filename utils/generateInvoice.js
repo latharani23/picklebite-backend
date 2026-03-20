@@ -168,7 +168,30 @@ const generateInvoice = (order) => {
 
     /* ================= TOTAL ================= */
 
-    doc.fontSize(14).text(`Grand Total: Rs. ${order.totalAmount}`, 350, y + 20);
+    y += 20;
+
+    // Subtotal
+    doc
+      .fontSize(11)
+      .fillColor("black")
+      .text(`Subtotal: Rs. ${order.subtotal ?? 0}`, 350, y);
+
+    // Delivery
+    y += 15;
+    doc.text(
+      `Delivery: ${
+        order.deliveryCharge === 0 ? "FREE" : `Rs. ${order.deliveryCharge}`
+      }`,
+      350,
+      y,
+    );
+
+    // Grand Total
+    y += 20;
+    doc
+      .fontSize(14)
+      .fillColor("green")
+      .text(`Grand Total: Rs. ${order.totalAmount ?? 0}`, 350, y);
 
     /* ================= FOOTER ================= */
 
