@@ -305,13 +305,40 @@ router.post("/place", async (req, res) => {
     if (!customer.pincode || customer.pincode.length !== 6) {
       throw new Error("Invalid delivery pincode");
     }
+    // try {
+    //   const shipment = await createShipment(order);
+
+    //   order.shipmentId = shipment.shipment_id;
+    //   order.awbCode = shipment.awb_code;
+    //   order.courier = shipment.courier_name;
+    //   order.trackingUrl = `https://shiprocket.co/tracking/${shipment.awb_code}`;
+
+    //   order.orderStatus = "CONFIRMED";
+
+    //   await order.save();
+    // } catch (shipErr) {
+    //   console.error(
+    //     "Shiprocket Error:",
+    //     shipErr.response?.data || shipErr.message,
+    //   );
+    // }
     try {
       const shipment = await createShipment(order);
+
+      console.log("SHIPROCKET RESPONSE:", shipment);
+
+      const deliveryCharge =
+        shipment.freight_charge || shipment.shipping_charges || 0;
 
       order.shipmentId = shipment.shipment_id;
       order.awbCode = shipment.awb_code;
       order.courier = shipment.courier_name;
       order.trackingUrl = `https://shiprocket.co/tracking/${shipment.awb_code}`;
+
+      // ⭐ IMPORTANT FIX
+      order.deliveryCharge = deliveryCharge;
+      order.subtotal = order.totalAmount;
+      order.totalAmount = order.totalAmount + deliveryCharge;
 
       order.orderStatus = "CONFIRMED";
 
@@ -380,7 +407,9 @@ ${cart
   .join("")}
 
 <p><b>Order ID:</b> ${shortOrderId}</p>
-<p><b>Total Paid:</b> Rs.${totalAmount}</p>
+<p><b>Subtotal:</b> Rs.${order.subtotal}</p>
+<p><b>Delivery:</b> Rs.${order.deliveryCharge}</p>
+<p><b>Total Paid:</b> Rs.${order.totalAmount}</p>
 
 <p>We will contact you shortly regarding delivery.</p>
 
