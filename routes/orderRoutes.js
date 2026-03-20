@@ -404,13 +404,10 @@ ${cart
   .join("")}
 
 <p><b>Order ID:</b> ${shortOrderId}</p>
-<p><b>Subtotal:</b> Rs.${subtotal}</p>
+<p><b>Subtotal:</b> Rs.${order.subtotal}</p>
+<p><b>Delivery:</b> Rs.${order.deliveryCharge}</p>
+<p><b>Total Paid:</b> Rs.${order.totalAmount}</p>
 
-<p><b>Delivery:</b> ${
-          deliveryCharge === 0 ? "FREE" : `Rs.${deliveryCharge}`
-        }</p>
-
-<p><b>Total Paid:</b> Rs.${total}</p>
 <p>We will contact you shortly regarding delivery.</p>
 
 <hr/>
