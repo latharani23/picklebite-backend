@@ -1,0 +1,38 @@
+[
+  {
+    "question": "Do you deliver?",
+    "answer": "Yes, we provide delivery in nearby cities and selected areas."
+  },
+  {
+    "question": "How can I order?",
+    "answer": "You can order through the website or contact us on WhatsApp."
+  },
+  {
+    "question": "What payment methods are available?",
+    "answer": "We accept UPI, cash on delivery, and bank transfer."
+  },
+  {
+    "question": "How many days does delivery take?",
+    "answer": "Delivery usually takes 1 to 3 days depending on your location."
+  },
+  {
+    "question": "Do you have spicy pickles?",
+    "answer": "Yes, Mango Pickle, Gongura Pickle, Garlic Pickle, and Tomato Pickle are spicy."
+  },
+  {
+    "question": "Which pickle is best with rice?",
+    "answer": "Mango Pickle, Gongura Pickle, and Mixed Veg Pickle are best with rice."
+  },
+  {
+    "question": "Do you have 1kg packs?",
+    "answer": "Yes, 1kg packs are available for Mango Pickle, Gongura Pickle, and Mixed Veg Pickle."
+  },
+  {
+    "question": "Can I order through WhatsApp?",
+    "answer": "Yes, you can place your order through WhatsApp for faster response."
+  },
+  {
+    "question": "Do you have less spicy pickles?",
+    "answer": "Yes, Lemon Pickle and Garlic Pickle are less spicy options."
+  }
+]

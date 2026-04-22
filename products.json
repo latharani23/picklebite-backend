@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Mango Pickle",
+    "price": "₹180",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Rice"
+  },
+  {
+    "name": "Gongura Pickle",
+    "price": "₹180",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Very Spicy",
+    "bestWith": "Rice"
+  },
+  {
+    "name": "Garlic Pickle",
+    "price": "₹185",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Medium Spicy",
+    "bestWith": "Chapati"
+  },
+  {
+    "name": "Lemon Pickle",
+    "price": "₹170",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Tangy",
+    "bestWith": "Curd Rice"
+  },
+  {
+    "name": "Mixed Veg Pickle",
+    "price": "₹170",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Rice"
+  },
+  {
+    "name": "Gajanimbe Pickle",
+    "price": "₹170",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Dosa"
+  },
+  {
+    "name": "Hirelikayi Pickle",
+    "price": "₹180",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Dosa"
+  },
+  {
+    "name": "Amla Pickle",
+    "price": "₹180",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Dosa"
+  },
+  {
+    "name": "Cucumber Pickle",
+    "price": "₹170",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Chapati"
+  },
+  {
+    "name": "Bitter Gourd Pickle",
+    "price": "₹180",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Dosa"
+  },
+  {
+    "name": "Green Chilli Pickle",
+    "price": "₹160",
+    "quantity": ["200g", "400g", "600g"],
+    "type": "Spicy",
+    "bestWith": "Curd Rice"
+  }
+]
