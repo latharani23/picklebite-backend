@@ -85,62 +85,73 @@ app.post("/api/shipping-rate", getShippingRate);
 /* ================= CHATBOT ROUTE ================= */
 
 app.post("/chat", (req, res) => {
-  const userMessage = req.body.message.toLowerCase();
+  const userMessage = req.body.message.toLowerCase().trim();
 
   let reply =
     "Sorry, I did not understand. Please ask about pickles, prices, delivery, or orders.";
 
-  // Product Search
-  for (let product of products) {
-    if (userMessage.includes(product.name.toLowerCase())) {
-      reply = `${product.name} is available for ${product.price}. Available quantities: ${product.quantity.join(
-        ", ",
-      )}.`;
-    }
-  }
+  let faqMatched = false;
 
-  // FAQ Search
+  // FAQ Search First
   for (let faq of faqs) {
-    const cleanQuestion = faq.question.toLowerCase().replace("?", "");
+    const cleanQuestion = faq.question.toLowerCase().replace("?", "").trim();
 
     if (userMessage.includes(cleanQuestion)) {
       reply = faq.answer;
+      faqMatched = true;
+      break;
+    }
+  }
+
+  // Product Search
+  if (!faqMatched) {
+    for (let product of products) {
+      if (userMessage.includes(product.name.toLowerCase())) {
+        reply = `${product.name} is available for ${product.price}. Available quantities: ${product.quantity.join(", ")}.`;
+        break;
+      }
     }
   }
 
   // Greeting
   if (
-    userMessage.includes("hi") ||
-    userMessage.includes("hello") ||
-    userMessage.includes("hey")
+    !faqMatched &&
+    (userMessage === "hi" || userMessage === "hello" || userMessage === "hey")
   ) {
     reply = "Hello! Welcome to PickleBite 💜";
   }
 
-  // Delivery
-  if (userMessage.includes("delivery")) {
-    reply = "Delivery usually takes 1 to 3 days.";
-  }
-
-  // Mango Pickle
-  if (userMessage.includes("mango")) {
-    reply = "Mango Pickle is available for ₹120 in 250g, 500g, and 1kg packs.";
-  }
-
-  // Spicy Pickles
-  if (userMessage.includes("spicy") || userMessage.includes("hot")) {
+  // Semantic Search
+  if (
+    !faqMatched &&
+    (userMessage.includes("spicy") ||
+      userMessage.includes("hot") ||
+      userMessage.includes("achar"))
+  ) {
     reply =
       "We recommend Mango Pickle, Gongura Pickle, Garlic Pickle, and Mixed Veg Pickle.";
   }
 
-  // Order Help
-  if (userMessage.includes("order")) {
+  // Rice Recommendation
+  if (!faqMatched && userMessage.includes("rice")) {
+    reply =
+      "Mango Pickle, Gongura Pickle, and Mixed Veg Pickle are best with rice.";
+  }
+
+  // Chapati Recommendation
+  if (!faqMatched && userMessage.includes("chapati")) {
+    reply = "Garlic Pickle and Lemon Pickle go very well with chapati.";
+  }
+
+  // Order Workflow
+  if (!faqMatched && userMessage.includes("order")) {
     reply = "Please tell us which pickle and quantity you want to order.";
   }
 
-  // Payment
-  if (userMessage.includes("payment")) {
-    reply = "We accept UPI, cash on delivery, and bank transfer.";
+  // Delivery Workflow
+  if (!faqMatched && userMessage.includes("delivery")) {
+    reply =
+      "We provide delivery in nearby cities and selected areas. Delivery takes 1 to 3 days.";
   }
 
   res.json({ reply });
