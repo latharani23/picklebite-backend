@@ -42,5 +42,41 @@
   {
     "question": "Do you have less spicy pickles?",
     "answer": "Yes, Lemon Pickle and Garlic Pickle are less spicy options."
+  },
+  {
+    "question": "Can I cancel my order?",
+    "answer": "Yes, you can cancel your order before it is shipped."
+  },
+  {
+    "question": "Can I change my order after placing it?",
+    "answer": "Yes, you can modify your order before dispatch."
+  },
+  {
+    "question": "How should I store the pickle?",
+    "answer": "Store the pickle in a cool and dry place. Always use a dry spoon."
+  },
+  {
+    "question": "How long can the pickle be stored?",
+    "answer": "Our pickles can be stored for up to 6 months if kept properly."
+  },
+  {
+    "question": "Do you offer combo packs?",
+    "answer": "Yes, we offer combo packs with different pickle varieties."
+  },
+  {
+    "question": "Which pickle is best for chapati?",
+    "answer": "Garlic Pickle and Lemon Pickle are best with chapati."
+  },
+  {
+    "question": "Do you have homemade pickles?",
+    "answer": "Yes, our pickles are made in a homemade style using fresh ingredients."
+  },
+  {
+    "question": "Can I place a bulk order?",
+    "answer": "Yes, we accept bulk and wholesale orders."
+  },
+  {
+    "question": "Do you deliver outside Bengaluru?",
+    "answer": "Yes, we deliver to selected cities outside Bengaluru."
   }
 ]
