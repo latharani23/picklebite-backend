@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const http = require("http");
 const fs = require("fs");
+const path = require("path");
 const { getShippingRate } = require("./routes/shipping");
 const { Server } = require("socket.io");
 
@@ -49,19 +50,17 @@ io.on("connection", (socket) => {
 
 /* ================= MIDDLEWARE ================= */
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  }),
-);
-
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
-/* ================= PRODUCTS & FAQ ================= */
+/* ================= LOAD PRODUCTS & FAQ ================= */
 
-const products = JSON.parse(fs.readFileSync("products.json", "utf8"));
-const faqs = JSON.parse(fs.readFileSync("faq.json", "utf8"));
+const products = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "products.json"), "utf-8"),
+);
+const faqs = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "faq.json"), "utf-8"),
+);
 
 /* ================= MONGODB ================= */
 
@@ -82,59 +81,49 @@ app.use("/api/comments", commentRoutes);
 app.use("/api", contactRoutes);
 app.post("/api/shipping-rate", getShippingRate);
 
-/* ================= CHATBOT ROUTE ================= */
+/* ================= CHATBOT HELPERS ================= */
 
-app.post("/chat", (req, res) => {
-  const userMessage = req.body.message.toLowerCase().trim();
-
-  let reply =
-    "Sorry, I did not understand. Please ask about pickles, prices, delivery, or orders.";
-
-  let faqMatched = false;
-
-  // FAQ Search First
-  const fs = require("fs");
-const path = require("path");
-
-/* ================= HELPERS ================= */
-
-// Tier 1 – Exact / keyword FAQ lookup (reads faq.json if it exists)
+// Tier 1 – FAQ lookup from already-loaded faq.json
 function searchFAQ(userMessage) {
-  const faqPath = path.join(__dirname, "faq.json");
-
-  if (!fs.existsSync(faqPath)) return null; // faq.json missing → skip
-
-  let faqs;
-  try {
-    faqs = JSON.parse(fs.readFileSync(faqPath, "utf-8"));
-  } catch {
-    return null; // malformed JSON → skip
-  }
-
   for (const faq of faqs) {
     const cleanQuestion = faq.question.toLowerCase().replace(/[?]/g, "").trim();
     if (userMessage.includes(cleanQuestion)) return faq.answer;
   }
-
-  return null; // no FAQ match
+  return null;
 }
 
-// Tier 2 – Semantic keyword search across products
-function semanticSearch(userMessage, products) {
+// Tier 2 – Semantic keyword + direct product name match
+function semanticSearch(userMessage) {
   const SEMANTIC_TAGS = {
-    spicy:   ["Mango Pickle", "Gongura Pickle", "Garlic Pickle", "Mixed Veg Pickle"],
-    hot:     ["Mango Pickle", "Gongura Pickle", "Garlic Pickle", "Mixed Veg Pickle"],
-    achar:   ["Mango Pickle", "Gongura Pickle", "Garlic Pickle", "Mixed Veg Pickle"],
-    sour:    ["Lemon Pickle", "Raw Mango Pickle"],
-    tangy:   ["Lemon Pickle", "Mango Pickle"],
-    mild:    ["Mixed Veg Pickle", "Lemon Pickle"],
+    spicy: [
+      "Mango Pickle",
+      "Gongura Pickle",
+      "Garlic Pickle",
+      "Mixed Veg Pickle",
+    ],
+    hot: [
+      "Mango Pickle",
+      "Gongura Pickle",
+      "Garlic Pickle",
+      "Mixed Veg Pickle",
+    ],
+    achar: [
+      "Mango Pickle",
+      "Gongura Pickle",
+      "Garlic Pickle",
+      "Mixed Veg Pickle",
+    ],
+    sour: ["Lemon Pickle", "Raw Mango Pickle"],
+    tangy: ["Lemon Pickle", "Mango Pickle"],
+    mild: ["Mixed Veg Pickle", "Lemon Pickle"],
   };
 
   for (const [tag, names] of Object.entries(SEMANTIC_TAGS)) {
     if (userMessage.includes(tag)) {
-      // Enrich with live price data if available
       const enriched = names.map((name) => {
-        const p = products.find((x) => x.name === name);
+        const p = products.find(
+          (x) => x.name.toLowerCase() === name.toLowerCase(),
+        );
         return p ? `${p.name} (${p.price})` : name;
       });
       return `Based on "${tag}", we recommend: ${enriched.join(", ")}.`;
@@ -148,7 +137,7 @@ function semanticSearch(userMessage, products) {
     }
   }
 
-  return null; // no semantic match
+  return null;
 }
 
 // Tier 3 – RAG: context-aware recommendations + intents
@@ -156,7 +145,8 @@ function ragResponse(userMessage) {
   const RAG_RULES = [
     {
       keywords: ["rice", "dal", "sambar"],
-      reply: "🍚 Best with rice: Mango Pickle, Gongura Pickle, and Mixed Veg Pickle.",
+      reply:
+        "🍚 Best with rice: Mango Pickle, Gongura Pickle, and Mixed Veg Pickle.",
     },
     {
       keywords: ["chapati", "roti", "paratha", "bread"],
@@ -164,7 +154,8 @@ function ragResponse(userMessage) {
     },
     {
       keywords: ["gift", "gifting", "present", "hamper"],
-      reply: "🎁 Our gift hampers include Mango, Lemon, and Mixed Veg Pickles — perfect for gifting!",
+      reply:
+        "🎁 Our gift hampers include Mango, Lemon, and Mixed Veg Pickles — perfect for gifting!",
     },
     {
       keywords: ["order", "buy", "purchase"],
@@ -172,11 +163,13 @@ function ragResponse(userMessage) {
     },
     {
       keywords: ["delivery", "ship", "shipping", "courier"],
-      reply: "🚚 We deliver to nearby cities in 1–3 days. Share your pincode to confirm availability.",
+      reply:
+        "🚚 We deliver to nearby cities in 1–3 days. Share your pincode to confirm availability.",
     },
     {
       keywords: ["return", "refund", "exchange"],
-      reply: "↩️ We accept returns within 7 days if the product is unopened. Contact us to initiate.",
+      reply:
+        "↩️ We accept returns within 7 days if the product is unopened. Contact us to initiate.",
     },
     {
       keywords: ["hi", "hello", "hey", "hii", "howdy"],
@@ -190,7 +183,7 @@ function ragResponse(userMessage) {
     }
   }
 
-  return null; // nothing matched
+  return null;
 }
 
 /* ================= CHATBOT ROUTE ================= */
@@ -202,37 +195,34 @@ app.post("/chat", (req, res) => {
     return res.status(400).json({ reply: "Message cannot be empty." });
   }
 
-  // ── Tier 1: FAQ (faq.json) ──────────────────────────────
+  // Tier 1: FAQ
   const faqReply = searchFAQ(userMessage);
-  if (faqReply) {
-    return res.json({ reply: faqReply, source: "faq" });
-  }
+  if (faqReply) return res.json({ reply: faqReply, source: "faq" });
 
-  // ── Tier 2: Semantic Search ─────────────────────────────
-  const semanticReply = semanticSearch(userMessage, products);
-  if (semanticReply) {
+  // Tier 2: Semantic Search
+  const semanticReply = semanticSearch(userMessage);
+  if (semanticReply)
     return res.json({ reply: semanticReply, source: "semantic" });
-  }
 
-  // ── Tier 3: RAG / Recommendations ──────────────────────
+  // Tier 3: RAG
   const ragReply = ragResponse(userMessage);
-  if (ragReply) {
-    return res.json({ reply: ragReply, source: "rag" });
-  }
+  if (ragReply) return res.json({ reply: ragReply, source: "rag" });
 
-  // ── Fallback ────────────────────────────────────────────
+  // Fallback
   return res.json({
-    reply: "Sorry, I didn't understand. Try asking about pickles, prices, delivery, or orders. 🥒",
+    reply:
+      "Sorry, I didn't understand. Try asking about pickles, prices, delivery, or orders. 🥒",
     source: "fallback",
   });
 });
+
 /* ================= HEALTH CHECK ================= */
 
 app.get("/", (req, res) => {
   res.send("🚀 PickleBite Backend is running...");
 });
 
-/* ================= SERVER ================= */
+/* ================= START SERVER ================= */
 
 const PORT = process.env.PORT || 3002;
 
