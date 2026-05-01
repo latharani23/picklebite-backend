@@ -12,18 +12,23 @@ exports.getShippingRate = async (req, res) => {
     if (!cart || cart.length === 0) {
       return res.status(400).json({ error: "Cart is empty" });
     }
-    const totalWeight = cart.reduce((sum, item) => {
-      let itemWeight = 0;
+    // const totalWeight = cart.reduce((sum, item) => {
+    //   let itemWeight = 0;
 
-      if (item.selectedWeight === "200g") itemWeight = 0.2;
-      else if (item.selectedWeight === "500g") itemWeight = 0.5;
-      else if (item.selectedWeight === "1kg") itemWeight = 1;
-      else itemWeight = 0.25; // fallback
+    //   if (item.selectedWeight === "200g") itemWeight = 0.2;
+    //   else if (item.selectedWeight === "500g") itemWeight = 0.5;
+    //   else if (item.selectedWeight === "1kg") itemWeight = 1;
+    //   else itemWeight = 0.25; // fallback
 
-      return sum + itemWeight * item.quantity;
-    }, 0);
+    //   return sum + itemWeight * item.quantity;
+    // }, 0);
 
-    const weight = Math.max(0.25, totalWeight);
+    // const weight = Math.max(0.25, totalWeight);
+    // Total quantity
+    const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    // Weight calculation (old logic: every item = 0.25kg)
+    const weight = Math.max(0.25, totalQty * 0.25);
 
     console.log("📦 Pincode:", pincode);
     console.log("🛒 Qty:", totalQty);
