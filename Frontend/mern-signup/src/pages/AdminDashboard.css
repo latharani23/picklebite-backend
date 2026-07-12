@@ -1,0 +1,220 @@
+/* 🌌 BACKGROUND */
+
+body {
+  background: linear-gradient(135deg, #2d004d, #4b0082, #7b2cbf);
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+/* 📦 CARDS */
+
+.card {
+  height: 100%;
+  background: rgba(45, 0, 77, 0.8);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+/* 👑 HEADINGS */
+
+h2,
+h4,
+h5 {
+  color: #ffd700;
+}
+
+/* 📊 TABLE */
+
+.table {
+  color: white;
+}
+
+.table thead {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.table tbody tr {
+  background: rgba(255, 255, 255, 0.05);
+  transition: 0.3s;
+}
+
+.table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 🔍 INPUTS + SELECTS */
+
+.form-control,
+.form-select {
+  background: white;
+  color: black;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.form-control::placeholder {
+  color: #666;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: white;
+  color: black;
+  border-color: #9d4edd;
+  box-shadow: 0 0 0 0.2rem rgba(157, 78, 221, 0.25);
+}
+
+/* 🔘 BUTTONS */
+
+.btn-primary {
+  background: #7b2cbf;
+  border: none;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #9d4edd;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: #c9184a;
+  border: none;
+}
+
+.btn-danger:hover {
+  background: #ff4d6d;
+}
+
+.btn-success {
+  background: #2dc653;
+  border: none;
+}
+
+.btn-success:hover {
+  background: #28a745;
+}
+
+/* 📄 PAGINATION */
+
+.page-link {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: none;
+}
+
+.page-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.page-item.active .page-link {
+  background: #ffd700;
+  color: #4b0082;
+  font-weight: bold;
+}
+
+/* 📦 MODAL */
+
+.modal-content {
+  background: #2d004d;
+  color: white;
+  border-radius: 14px;
+  border: none;
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 🏷 BADGES */
+
+.badge {
+  padding: 8px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+}
+
+/* 📋 TABLE RESPONSIVE */
+
+.table-responsive {
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+/* 💰 PROFIT / LOSS */
+
+.text-success {
+  font-weight: 600;
+}
+
+.text-danger {
+  font-weight: 600;
+}
+
+/* 📱 TABLET */
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 13px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .card {
+    margin-bottom: 15px;
+  }
+
+  .btn {
+    font-size: 13px;
+  }
+}
+
+/* 📱 MOBILE */
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  .table {
+    font-size: 12px;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 15px !important;
+  }
+}

@@ -1,0 +1,313 @@
+.page {
+  background: linear-gradient(135deg, #f3ecff, #cdb4ff);
+  padding: 40px;
+  color: white;
+}
+
+.title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 900;
+  color: #4b0082;
+}
+
+/* CONTROLS */
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.controls input,
+.controls select {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+/* TITLE */
+.section-title {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #4b0082;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* CARD */
+.card {
+  background: white;
+  color: black;
+  border-radius: 16px;
+  padding: 15px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 8px 20px rgba(75, 0, 130, 0.15);
+}
+
+.card img {
+  width: 100%;
+  max-width: 220px;
+  height: 200px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/* CONTENT */
+.card-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-content h3 {
+  min-height: 48px;
+}
+
+/* WEIGHT */
+.weight-selector {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.weight-selector button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #eee;
+  cursor: pointer;
+}
+
+.weight-selector .active {
+  background: #6a0dad;
+  color: white;
+  border: none;
+}
+
+/* HIGHLIGHT */
+.royal-highlight {
+  margin: 12px 0;
+  padding: 10px;
+  background: linear-gradient(135deg, #f8f2ff, #e9d5ff);
+  border: 2px solid #c084fc;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.highlight-icon {
+  font-size: 18px;
+}
+
+.highlight-text {
+  color: #5b21b6;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* PRICE */
+.price {
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+/* CART BUTTON */
+.cart-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #6a0dad, #9c27b0);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ACTION BUTTONS */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.action-buttons button {
+  flex: 1;
+  min-width: 0;
+}
+
+/* WISHLIST + SHARE */
+.wishlist-btn {
+  width: 100%;
+  border: 1px solid #ff4d6d;
+  color: #ff4d6d;
+  padding: 10px;
+  border-radius: 10px;
+  background: white;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.wishlist-btn:hover {
+  background: #ff4d6d;
+  color: white;
+}
+
+.cart-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===========================
+   TABLET
+=========================== */
+@media (max-width: 768px) {
+  .page {
+    padding: 25px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .controls {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .controls input,
+  .controls select {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+@media (max-width: 600px) {
+  .page {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin: 20px 0;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls input,
+  .controls select {
+    width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .card img {
+    height: 180px;
+  }
+
+  .card-content h3 {
+    font-size: 18px;
+    min-height: auto;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+
+  .weight-selector {
+    gap: 6px;
+  }
+
+  .weight-selector button {
+    flex: 1 1 auto;
+  }
+}
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+@media (max-width: 480px) {
+  .page {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .card {
+    border-radius: 12px;
+  }
+
+  .card img {
+    height: 160px;
+  }
+
+  .cart-btn,
+  .wishlist-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .highlight-text {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 17px;
+  }
+}

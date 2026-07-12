@@ -1,0 +1,36 @@
+.feedback-page {
+  text-align: center;
+  padding: 50px;
+}
+
+.feedback-form {
+  max-width: 500px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.feedback-form input,
+.feedback-form textarea,
+.feedback-form select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.feedback-form button {
+  background: orange;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.review-card {
+  background: #fff3e0;
+  padding: 20px;
+  border-radius: 15px;
+  margin: 10px;
+}

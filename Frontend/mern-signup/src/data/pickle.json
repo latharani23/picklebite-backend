@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "name": "Lemon Pickle",
+    "description": "Tangy traditional lemon pickle",
+    "image": "/images/lemon.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Garlic Pickle",
+    "description": "Spicy garlic pickle",
+    "image": "/images/garlic.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Mixed Vegetable Pickle",
+    "description": "Traditional mixed vegetable pickle",
+    "image": "/images/mixed.jpg"
+  },
+
+  {
+    "id": 5,
+    "name": "Tomato Pickle",
+    "description": "Spicy tomato pickle",
+    "image": "/images/tomato.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Gajanimbe Pickle",
+    "description": "Traditional gajanimbe pickle",
+    "image": "/images/gajanimbe.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Cucumber Pickle (Mangalore Style)",
+    "description": "Authentic Mangalore style cucumber pickle",
+    "image": "/images/cucumber.jpg"
+  }
+]

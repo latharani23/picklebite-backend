@@ -1,0 +1,461 @@
+/* ===========================================
+   PICKLEBITE DELIVERY UPDATES
+=========================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+.delivery-page {
+  background: linear-gradient(180deg, #faf8ff 0%, #ffffff 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===========================================
+   HERO
+=========================================== */
+
+.delivery-hero {
+  position: relative;
+  padding: 100px 20px;
+  background: linear-gradient(135deg, #4b0082 0%, #6a0dad 50%, #8b5cf6 100%);
+  overflow: hidden;
+}
+
+.delivery-hero::before {
+  content: "";
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  top: -300px;
+  right: -180px;
+}
+
+.delivery-hero::after {
+  content: "";
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  bottom: -220px;
+  left: -120px;
+}
+
+.hero-overlay {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+.hero-overlay h1 {
+  color: white;
+  font-size: 52px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.hero-overlay p {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 19px;
+  line-height: 1.9;
+  max-width: 760px;
+  margin: auto;
+}
+
+.hero-overlay button {
+  margin-top: 35px;
+  padding: 16px 38px;
+  border: none;
+  border-radius: 50px;
+  background: white;
+  color: #4b0082;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.35s;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.hero-overlay button:hover {
+  transform: translateY(-5px);
+}
+
+/* ===========================================
+   STATS
+=========================================== */
+
+.stats-section {
+  max-width: 1300px;
+  margin: -70px auto 80px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+  position: relative;
+  z-index: 10;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  padding: 35px 25px;
+  text-align: center;
+  transition: 0.35s;
+  box-shadow: 0 20px 45px rgba(75, 0, 130, 0.08);
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+}
+
+.stat-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: auto;
+  background: linear-gradient(135deg, #8b5cf6, #4b0082);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  margin-bottom: 20px;
+}
+
+.stat-card h3 {
+  color: #4b0082;
+  margin-bottom: 10px;
+}
+
+.stat-card p {
+  color: #666;
+}
+
+/* ===========================================
+   TIMELINE
+=========================================== */
+
+.timeline-section {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.timeline-section h2 {
+  text-align: center;
+  font-size: 40px;
+  color: #4b0082;
+  margin-bottom: 70px;
+}
+
+.timeline-card {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  margin-bottom: 40px;
+  background: white;
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 18px 40px rgba(75, 0, 130, 0.08);
+  transition: 0.35s;
+  position: relative;
+}
+
+.timeline-card:hover {
+  transform: translateX(10px);
+}
+
+.timeline-card::before {
+  content: "";
+  position: absolute;
+  left: 40px;
+  top: -40px;
+  width: 4px;
+  height: 40px;
+  background: #d9b8ff;
+}
+
+.timeline-card:first-child::before {
+  display: none;
+}
+
+.timeline-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #4b0082);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 40px;
+  flex-shrink: 0;
+}
+
+.timeline-content h3 {
+  color: #4b0082;
+  margin-bottom: 10px;
+}
+
+.timeline-content p {
+  color: #666;
+  line-height: 1.8;
+}
+
+/* ===========================================
+   STATUS
+=========================================== */
+
+.status-preview {
+  max-width: 850px;
+  margin: 90px auto;
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 18px 45px rgba(75, 0, 130, 0.08);
+}
+
+.status-preview h2 {
+  text-align: center;
+  color: #4b0082;
+  margin-bottom: 35px;
+}
+
+.status-box {
+  display: grid;
+  gap: 18px;
+}
+
+.status-box div {
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: #f6f2ff;
+  font-weight: 600;
+}
+
+.completed {
+  color: #28a745;
+  border-left: 6px solid #28a745;
+}
+
+.active {
+  color: #4b0082;
+  border-left: 6px solid #4b0082;
+}
+
+/* ===========================================
+   PROMISE
+=========================================== */
+
+.promise-section {
+  max-width: 1200px;
+  margin: 90px auto;
+  padding: 0 20px;
+}
+
+.promise-section h2 {
+  text-align: center;
+  color: #4b0082;
+  margin-bottom: 40px;
+}
+
+.promise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 25px;
+}
+
+.promise-grid div {
+  background: white;
+  padding: 28px;
+  text-align: center;
+  border-radius: 20px;
+  font-weight: 600;
+  box-shadow: 0 12px 30px rgba(75, 0, 130, 0.08);
+  transition: 0.35s;
+}
+
+.promise-grid div:hover {
+  transform: translateY(-8px);
+}
+
+/* ===========================================
+   NOTIFICATION
+=========================================== */
+
+.notification-card {
+  max-width: 900px;
+  margin: 90px auto;
+  padding: 45px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #4b0082, #7b2cbf);
+  color: white;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(75, 0, 130, 0.25);
+}
+
+.notification-card h2 {
+  margin-bottom: 20px;
+}
+
+.notification-card p {
+  line-height: 1.8;
+}
+
+.notification-card ul {
+  margin-top: 25px;
+  list-style: none;
+  padding: 0;
+}
+
+.notification-card li {
+  margin: 12px 0;
+  font-size: 17px;
+}
+
+/* ===========================================
+   FAQ
+=========================================== */
+
+.faq-section {
+  max-width: 900px;
+  margin: 90px auto;
+  padding: 20px;
+}
+
+.faq-section h2 {
+  text-align: center;
+  color: #4b0082;
+  margin-bottom: 35px;
+}
+
+.faq-section details {
+  background: white;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 25px rgba(75, 0, 130, 0.08);
+  overflow: hidden;
+}
+
+.faq-section summary {
+  padding: 22px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.faq-section p {
+  padding: 0 22px 22px;
+  color: #666;
+  line-height: 1.7;
+}
+
+/* ===========================================
+   CTA
+=========================================== */
+
+.bottom-cta {
+  margin-top: 100px;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #4b0082, #8b5cf6);
+  text-align: center;
+}
+
+.bottom-cta h2 {
+  color: white;
+  font-size: 42px;
+}
+
+.bottom-cta p {
+  color: white;
+  margin: 20px auto;
+  max-width: 700px;
+  line-height: 1.8;
+}
+
+.bottom-cta button {
+  margin-top: 20px;
+  padding: 18px 40px;
+  border: none;
+  border-radius: 50px;
+  background: white;
+  color: #4b0082;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.35s;
+}
+
+.bottom-cta button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* ===========================================
+   RESPONSIVE
+=========================================== */
+
+@media (max-width: 992px) {
+  .hero-overlay h1 {
+    font-size: 42px;
+  }
+
+  .timeline-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .timeline-card::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .delivery-hero {
+    padding: 80px 20px;
+  }
+
+  .hero-overlay h1 {
+    font-size: 34px;
+  }
+
+  .hero-overlay p {
+    font-size: 16px;
+  }
+
+  .timeline-section h2,
+  .status-preview h2,
+  .promise-section h2,
+  .faq-section h2 {
+    font-size: 30px;
+  }
+
+  .timeline-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+  }
+
+  .timeline-card {
+    padding: 25px;
+  }
+
+  .status-preview {
+    padding: 25px;
+  }
+
+  .notification-card {
+    padding: 30px 20px;
+  }
+
+  .bottom-cta h2 {
+    font-size: 30px;
+  }
+}

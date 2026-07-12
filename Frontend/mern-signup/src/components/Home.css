@@ -1,0 +1,136 @@
+/* ================= GLOBAL ================= */
+.home-container {
+  width: 100%;
+  overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+  background: #fafafa;
+}
+
+/* ================= NAVBAR TOGGLER ================= */
+.navbar-toggler {
+  border: none;
+  outline: none;
+}
+
+/* ================= BRAND SECTION ================= */
+.brand-container {
+  text-align: center;
+  color: #2c2c2c;
+}
+
+.brand-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #4b0082;
+}
+
+.brand-sub {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+/* ================= VEGGIE EMOJIS ================= */
+.veggie-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 1.5rem;
+}
+
+.veggie-container .big {
+  font-size: 2.5rem;
+}
+
+/* ================= BULK ORDER ================= */
+.bulk-container {
+  display: flex;
+  justify-content: center;
+}
+
+.bulk-box {
+  background: #6a1b9a;
+  color: #fff;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 1rem;
+  text-align: center;
+  max-width: 600px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ================= SECTIONS SPACING ================= */
+section {
+  padding: 40px 20px;
+}
+
+/* ================= BUTTONS ================= */
+button {
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* ----------- MOBILE (up to 576px) ----------- */
+@media (max-width: 576px) {
+  .brand-title {
+    font-size: 2rem;
+  }
+
+  .brand-sub {
+    font-size: 1rem;
+  }
+
+  .veggie-container {
+    font-size: 1.2rem;
+  }
+
+  .veggie-container .big {
+    font-size: 2rem;
+  }
+
+  .bulk-box {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+}
+
+/* ----------- TABLET (577px - 991px) ----------- */
+@media (min-width: 577px) and (max-width: 991px) {
+  .brand-title {
+    font-size: 2.5rem;
+  }
+
+  .brand-sub {
+    font-size: 1.1rem;
+  }
+
+  .bulk-box {
+    font-size: 1rem;
+  }
+}
+
+/* ----------- DESKTOP (992px+) ----------- */
+@media (min-width: 992px) {
+  .brand-title {
+    font-size: 3.5rem;
+  }
+
+  .brand-sub {
+    font-size: 1.3rem;
+  }
+
+  .veggie-container {
+    font-size: 1.8rem;
+  }
+}
+
+/* ================= SMOOTH SCROLL ================= */
+html {
+  scroll-behavior: smooth;
+}

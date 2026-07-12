@@ -1,0 +1,180 @@
+.footer {
+  background: #1f1f1f;
+  color: #ffffff;
+  padding: 40px 20px 20px;
+}
+
+/* ===== Container ===== */
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ===== Sections ===== */
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Headings */
+.footer-section h4,
+.footer-section h5 {
+  color: #ff9f43;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* Text */
+.footer-section p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+/* Links */
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.footer-section ul li:hover {
+  color: #ff9f43;
+}
+
+/* ===== CONTACT LINKS ===== */
+.contact-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 5px;
+}
+
+/* Hover */
+.contact-link:hover {
+  color: #ff9f43;
+}
+
+/* 📞 Phone */
+.contact-link.phone i {
+  color: #ff9f43;
+}
+
+/* 🟢 WhatsApp Highlight */
+.contact-link.whatsapp {
+  background: #25d366;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  animation: pulse 1.5s infinite;
+}
+
+/* WhatsApp Hover */
+.contact-link.whatsapp:hover {
+  background: #1ebe5d;
+  transform: scale(1.05);
+}
+
+/* 💫 Pulse Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ===== Social ===== */
+.social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.social-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.social-link:hover {
+  color: #ff9f43;
+}
+
+/* ===== Footer Bottom ===== */
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #444;
+  margin-top: 30px;
+  padding-top: 15px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.footer-bottom strong {
+  color: #ff9f43;
+}
+
+/* ============================= */
+/* 📱 Mobile (max 768px) */
+/* ============================= */
+@media (max-width: 768px) {
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: left;
+  }
+
+  .footer-section {
+    min-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  /* Contact + We Accept side by side */
+  .footer-section.contact,
+  .footer-section.accept {
+    flex: 0 0 50%;
+    min-width: 50%;
+  }
+
+  .footer-section h4,
+  .footer-section h5 {
+    font-size: 16px;
+  }
+
+  .footer-section p,
+  .footer-section ul li {
+    font-size: 13px;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    font-size: 12px;
+  }
+}
