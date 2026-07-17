@@ -37,6 +37,8 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
 import SampleBox from "./pages/SampleBox";
 import ProductExperienceSection from "./sections/ProductExperienceSection";
+import Promotions from "./pages/Promotions";
+import WhatsappOrders from "./pages/WhatsappOrders";
 
 const App = () => {
   const location = useLocation();
@@ -79,6 +81,8 @@ const App = () => {
         <Route path="/product/:slug" element={<ProductDetails />} />
         <Route path="/admin-analytics" element={<AdminAnalytics />} />
         <Route path="/expenses" element={<ExpensesPage />} />
+        <Route path="/promotions" element={<Promotions />} />
+        <Route path="/whatsapp-orders" element={<WhatsappOrders />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/payment-failed" element={<PaymentFailed />} />

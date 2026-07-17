@@ -388,7 +388,18 @@ const AdminDashboard = () => {
             >
               Expenses
             </button>
-
+            <button
+              className="btn btn-outline-light text-start"
+              onClick={() => navigate("/promotions")}
+            >
+              Promotions
+            </button>
+            <button
+              className="btn btn-outline-light text-start"
+              onClick={() => navigate("/whatsapp-orders")}
+            >
+              WhatsApp Orders
+            </button>
             <button className="btn btn-danger mt-5" onClick={handleLogout}>
               Logout
             </button>

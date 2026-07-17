@@ -36,4 +36,8 @@ export const API = {
 
   EXPENSES: `${BASE_URL}/api/admin/expenses`,
   ADD_EXPENSE: `${BASE_URL}/api/admin/expenses`,
+  PROMOTIONS: `${BASE_URL}/api/promotions`,
+  ADD_PROMOTION: `${BASE_URL}/api/promotions`,
+  WHATSAPP_ORDERS: `${BASE_URL}/api/whatsapp-orders`,
+  ADD_WHATSAPP_ORDER: `${BASE_URL}/api/whatsapp-orders`,
 };
