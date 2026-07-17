@@ -1,4 +1,5 @@
 const express = require("express");
+console.log("🔥 promotionRoutes.js loaded");
 const router = express.Router();
 
 const upload = require("../middleware/upload");
