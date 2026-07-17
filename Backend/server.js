@@ -14,7 +14,7 @@ const orderRoutes = require("./routes/orderRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-
+const promotionRoutes = require("./routes/promotionRoutes");
 const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 const contactRoutes = require("./routes/contactRoutes");
@@ -69,6 +69,8 @@ mongoose
 
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/promotions", promotionRoutes);
+app.use("/api/expenses", expenseRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
