@@ -1,4 +1,5 @@
 import React from "react";
+import DownloadInvoiceButton from "../components/DownloadInvoiceButton";
 
 const WhatsappOrderDetailsModal = ({ show, order, onClose }) => {
   if (!show || !order) return null;
@@ -98,7 +99,11 @@ const WhatsappOrderDetailsModal = ({ show, order, onClose }) => {
               </div>
             </div>
           </div>
-
+          <div className="modal-body">
+            <div className="col-md-12 mt-4">
+              <DownloadInvoiceButton order={order} />
+            </div>
+          </div>
           <div className="modal-footer">
             <button className="btn btn-secondary" onClick={onClose}>
               Close

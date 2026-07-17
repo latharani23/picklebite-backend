@@ -1,5 +1,5 @@
 import React from "react";
-
+import DownloadInvoiceButton from "../components/DownloadInvoiceButton";
 const WhatsappOrderTable = ({ orders, onEdit, onDelete }) => {
   return (
     <div className="card shadow border-0">
@@ -16,6 +16,7 @@ const WhatsappOrderTable = ({ orders, onEdit, onDelete }) => {
               <th>Status</th>
               <th>Courier</th>
               <th>Tracking</th>
+              <th>Invoice</th>
               <th width="170">Actions</th>
             </tr>
           </thead>
@@ -69,7 +70,9 @@ const WhatsappOrderTable = ({ orders, onEdit, onDelete }) => {
                   <td>{order.courier || "-"}</td>
 
                   <td>{order.trackingId || "-"}</td>
-
+                  <td>
+                    <DownloadInvoiceButton order={order} />
+                  </td>
                   <td>
                     <button
                       className="btn btn-warning btn-sm me-2"

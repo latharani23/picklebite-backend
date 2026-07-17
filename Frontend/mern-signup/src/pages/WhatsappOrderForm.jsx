@@ -213,7 +213,21 @@ const WhatsappOrderForm = ({ show, onClose, onSuccess, order }) => {
                   </div>
                 </div>
               </div>
+              <div className="mb-3">
+                <label className="form-label">Attach Invoice (PDF)</label>
 
+                <input
+                  type="file"
+                  accept=".pdf"
+                  className="form-control"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      invoice: e.target.files[0],
+                    })
+                  }
+                />
+              </div>
               <div className="modal-footer">
                 <button
                   className="btn btn-secondary"
