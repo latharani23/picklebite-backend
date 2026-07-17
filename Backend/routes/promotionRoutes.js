@@ -1,6 +1,7 @@
 const express = require("express");
-
 const router = express.Router();
+
+const upload = require("../middleware/upload");
 
 const {
   createPromotion,
@@ -10,21 +11,14 @@ const {
   deletePromotion,
 } = require("../controllers/promotionController");
 
-// Create Promotion
-router.post("/", createPromotion);
-
-// Get All Promotions
-router.get("/", getPromotions);
-
-// Get Single Promotion
-router.get("/:id", getPromotion);
-
-// Update Promotion
-router.put("/:id", updatePromotion);
 router.post("/", upload.single("profileImage"), createPromotion);
 
+router.get("/", getPromotions);
+
+router.get("/:id", getPromotion);
+
 router.put("/:id", upload.single("profileImage"), updatePromotion);
-// Delete Promotion
+
 router.delete("/:id", deletePromotion);
 
 module.exports = router;
