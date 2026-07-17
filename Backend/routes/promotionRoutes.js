@@ -12,13 +12,9 @@ const {
 } = require("../controllers/promotionController");
 
 router.post("/", upload.single("profileImage"), createPromotion);
-
 router.get("/", getPromotions);
-
 router.get("/:id", getPromotion);
-
 router.put("/:id", upload.single("profileImage"), updatePromotion);
-
 router.delete("/:id", deletePromotion);
 
 module.exports = router;
