@@ -119,6 +119,7 @@ router.get("/dashboard", protect, async (req, res) => {
       revenue: received,
       pendingAmount: pending,
       expenses,
+      expensesList: expensesData, // ✅ add this
     });
   } catch (error) {
     console.error(error);
