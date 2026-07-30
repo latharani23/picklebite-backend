@@ -175,6 +175,7 @@
 // };
 
 const axios = require("axios");
+const FIXED_DELIVERY_CHARGE = 100;
 
 exports.getShippingRate = async (req, res) => {
   try {
@@ -263,12 +264,19 @@ exports.getShippingRate = async (req, res) => {
     }
 
     // Cheapest courier
-    const cheapest = couriers.reduce((min, c) => (c.rate < min.rate ? c : min));
+    // const cheapest = couriers.reduce((min, c) => (c.rate < min.rate ? c : min));
 
-    console.log("🚚 Delivery Charge:", cheapest.rate);
+    // console.log("🚚 Delivery Charge:", cheapest.rate);
+
+    // return res.json({
+    //   deliveryCharge: cheapest.rate,
+    // });
+    // Fixed delivery charge
+
+    console.log("🚚 Fixed Delivery Charge:", FIXED_DELIVERY_CHARGE);
 
     return res.json({
-      deliveryCharge: cheapest.rate,
+      deliveryCharge: FIXED_DELIVERY_CHARGE,
     });
   } catch (err) {
     console.error("❌ Shiprocket Error:", err.response?.data || err.message);
